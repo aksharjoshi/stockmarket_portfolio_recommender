@@ -50,7 +50,7 @@ def switch_reflect():
 @app.route('/')
 def hello():
 	list = [
-        {'param': 'message', 'val': 'connected'}
+        {'param': 'message', 'val': 'connected', 'status': control}
     ]
 	return jsonify(result = list)
 

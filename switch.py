@@ -38,14 +38,14 @@ def switch_reflect():
 	global control
 	global start
 	global total
-	if status == 0:
+	if status == '0':
 		control = 0
 		end = time.time()
 		total = total + (end - start) * energy
-	else:
+	elif status == '1':
 		control = 1
 		start = time.time()
-	return 'The switch status has been updated'
+	return 'The switch status has been updated' 
 
 @app.route('/')
 def hello():

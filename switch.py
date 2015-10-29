@@ -1,9 +1,9 @@
 from flask import Flask, jsonify
 from flask import request
-import time
+import timeit
 app = Flask(__name__)
 control = 0
-start = time.time();
+start = timeit.default_timer()
 energy = 0.16;
 total = 0;
 
@@ -15,10 +15,10 @@ def switch_control():
 	global total
 	if control == 0:
 		control = 1
-		start = time.time()
+		start = timeit.default_timer()
 	else:
 		control = 0
-        end = time.time()
+        end = timeit.default_timer()
         total = total + (end - start) * energy
 	if control == 0:
 		list = [
@@ -40,11 +40,11 @@ def switch_reflect():
 	global total
 	if status == '0':
 		control = 0
-		end = time.time()
+		end = timeit.default_timer()
 		total = total + (end - start) * energy
 	elif status == '1':
 		control = 1
-		start = time.time()
+		start = timeit.default_timer()
 	return 'The switch status has been updated' 
 
 @app.route('/')
@@ -55,9 +55,9 @@ def hello():
 	return jsonify(result = list)
 
 @app.route('/check_powercost')
-def energy():
+def power_energy():
 	list = [
-        {'param': 'message', 'val': total}
+        {'param': 'energy', 'val': total}
     ]
 	return jsonify(result = list)
 

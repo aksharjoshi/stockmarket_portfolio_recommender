@@ -44,7 +44,7 @@ def switch_reflect():
 		total = total + (end - start) * energy
 	elif status == '1' and control == 0:
 		control = 1
-		start = time.time
+		start = time.time()
 	return 'The switch status has been updated' 
 
 @app.route('/')

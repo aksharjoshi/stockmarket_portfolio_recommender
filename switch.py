@@ -55,7 +55,7 @@ def hello():
 	return jsonify(result = list)
 
 @app.route('/check_powercost')
-def hello():
+def energy():
 	list = [
         {'param': 'message', 'val': total}
     ]

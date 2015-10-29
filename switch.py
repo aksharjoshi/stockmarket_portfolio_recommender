@@ -52,7 +52,7 @@ def hello():
 	list = [
         {'param': 'message', 'val': 'connected', 'status': control}
     ]
-	return jsonify(result = list
+	return jsonify(result = list)
 
 @app.route('/check_powercost')
 def hello():

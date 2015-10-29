@@ -52,7 +52,7 @@ def hello():
 	list = [
         {'param': 'message', 'val': 'connected'}
     ]
-    return jsonify(result = list)
+	return jsonify(result = list)
 
 
 

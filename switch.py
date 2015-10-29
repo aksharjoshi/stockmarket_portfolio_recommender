@@ -47,6 +47,13 @@ def switch_reflect():
 		start = time.time()
 	return 'The switch status has been updated'
 
+@app.route('/')
+def hello():
+	list = [
+        {'param': 'message', 'val': 'connected'}
+    ]
+    return jsonify(result = list)
+
 
 
 

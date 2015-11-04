@@ -6,7 +6,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
 app = Flask(__name__)
 cost = 0.16
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/flask_app.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/flask_switch.db')
 db = SQLAlchemy(app)
 
 class Status(db.Model):

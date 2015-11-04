@@ -5,11 +5,13 @@ from flask import Flask, jsonify
 from flask import request
 from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask.ext.heroku import Heroku
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 cost = 0.16
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/switch.db')
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/switch.db')
+heroku = Heroku(app)
 db = SQLAlchemy(app)
 
 class User(db.Model):

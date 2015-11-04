@@ -12,7 +12,7 @@ cost = 0.16
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/switch.db')
 db = SQLAlchemy(app)
 
-class Status(db.Model):
+class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	control = db.Column(db.Integer)
 	time = db.Column(db.DateTime)
@@ -25,7 +25,7 @@ class Status(db.Model):
 
 @app.route('/switch_control/')
 def switch_control():
-	temp = Status.query.get(1)
+	temp = User.query.get(1)
 	if temp.control == 0:
 		temp.control = 1
 		temp.time = datetime.utcnow()
@@ -51,7 +51,7 @@ def switch_control():
 @app.route('/switch_reflect/')
 def switch_reflect():
     var = request.args.get('status', '')
-    temp = Status.query.get(1)
+    temp = User.query.get(1)
     if  var == '0' and temp.control == 1:
         temp.control = 0
         end = datetime.utcnow()
@@ -68,7 +68,7 @@ def switch_reflect():
 
 @app.route('/')
 def hello():
-	temp = Status.query.get(1)
+	temp = User.query.get(1)
 	list = [
         {'param': 'message', 'val': 'connected', 'status': temp.control}
     ]
@@ -76,7 +76,7 @@ def hello():
 
 @app.route('/check_powercost')
 def power_energy():
-    temp = Status.query.get(1)
+    temp = User.query.get(1)
     total = 0
     if temp.control == 0:
     	total = temp.energy
@@ -94,7 +94,7 @@ def power_energy():
 
 if __name__ == '__main__':
     db.create_all()
-    record = Status(0, datetime.utcnow(), 0)
+    record = User(0, datetime.utcnow(), 0)
     db.session.add(record)
     db.session.commit()
     app.run(debug = True)

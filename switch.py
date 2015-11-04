@@ -70,11 +70,15 @@ def switch_reflect():
 
 @app.route('/')
 def hello():
-	temp = User.query.get(1)
-	list = [
+    temp = User.query.get(1)
+    if temp == None:
+        temp = User(0, datetime.utcnow(), 0)
+        db.session.add(temp)
+        db.session.commit()
+    list = [
         {'param': 'message', 'val': 'connected', 'status': temp.control}
     ]
-	return jsonify(result = list)
+    return jsonify(result = list)
 
 @app.route('/check_powercost')
 def power_energy():
@@ -96,7 +100,4 @@ def power_energy():
 
 if __name__ == '__main__':
     db.create_all()
-    record = User(0, datetime.utcnow(), 0)
-    db.session.add(record)
-    db.session.commit()
     app.run(debug = True)

@@ -99,7 +99,7 @@ def power_energy():
 @app.route('/reset')
 def reset():
     temp = User.query.get(1)
-	if temp == None:
+    if temp == None:
         temp = User(0, datetime.utcnow(), 0)
         db.session.add(temp)
         db.session.commit()

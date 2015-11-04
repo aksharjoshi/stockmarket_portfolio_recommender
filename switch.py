@@ -96,6 +96,21 @@ def power_energy():
     return jsonify(result = list)
 
 
+@app.route('/reset')
+def power_energy():
+    temp = User.query.get(1)
+	if temp == None:
+        temp = User(0, datetime.utcnow(), 0)
+        db.session.add(temp)
+        db.session.commit()
+    else:
+       temp.energy = 0
+       temp.time = datetime.utcnow()
+       temp.control = 0
+       db.session.commit()
+    return 'The switch status has been reset' 
+
+
 
 
 if __name__ == '__main__':

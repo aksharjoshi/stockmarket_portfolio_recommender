@@ -97,7 +97,7 @@ def power_energy():
 
 
 @app.route('/reset')
-def power_energy():
+def reset():
     temp = User.query.get(1)
 	if temp == None:
         temp = User(0, datetime.utcnow(), 0)

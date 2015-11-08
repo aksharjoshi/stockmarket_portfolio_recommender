@@ -114,11 +114,11 @@ def reset():
 def check_status():
     temp = User.query.get(1)
     status = temp.control
-    list = [
-        {'val': status}
-    ]
     db.session.commit()
-    return jsonify(list)
+      list = [
+        {'param': 'switch_status', 'val': status}
+    ]
+    return jsonify(result = list)
 
 
 

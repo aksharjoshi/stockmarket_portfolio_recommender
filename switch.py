@@ -115,7 +115,7 @@ def check_status():
     temp = User.query.get(1)
     status = temp.control
     list = [
-        {'param': 'status', 'val': status}
+        {'val': status}
     ]
     db.session.commit()
     return jsonify(list)

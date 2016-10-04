@@ -1,1 +1,1 @@
-web: gunicorn touch:app --log-file=-
+web: gunicorn switch:app --log-file=-

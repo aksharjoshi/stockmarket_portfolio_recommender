@@ -45,7 +45,7 @@ def logout():
     session['logged_in'] = False;
     return render_template('index.html')
 
-@app.route("/sign_up")
+@app.route("/sign_up", methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
         session['logged_in'] = True;

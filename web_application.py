@@ -55,6 +55,7 @@ def sign_up():
         if test is not None:
     	    return render_template('userExisted.html', username=username)
         me = WebUser(username, datetime.utcnow(), pwd, email)
+        app.logger.info(me.id)
         db.session.add(me)
         db.session.commit()
         session['username'] = username;

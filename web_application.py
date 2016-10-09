@@ -2,29 +2,29 @@ from flask import Flask, render_template, send_from_directory, session, request
 import os
 import sys
 import logging
-#import psycopg2
+import psycopg2
 import urlparse
-#from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
-#from flask.ext.heroku import Heroku
+from flask.ext.heroku import Heroku
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/web_application.db')
-#heroku = Heroku(app)
-#db = SQLAlchemy(app)
+heroku = Heroku(app)
+db = SQLAlchemy(app)
 
-#class WebUser(db.Model):
-#	id = db.Column(db.Integer, primary_key=True)
-#	name = db.Column(db.String(80))
-#	time = db.Column(db.DateTime)
-#	password = db.Column(db.String(80))
-#	email = db.Column(db.String(80))
-#	def __init__(self, name, time, password):
-#		self.name = name
-#		self.time = time
-#		self.password = password
-#		self.email = email
+class WebUser(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(80))
+	time = db.Column(db.DateTime)
+	password = db.Column(db.String(80))
+	email = db.Column(db.String(80))
+	def __init__(self, name, time, password):
+		self.name = name
+		self.time = time
+		self.password = password
+		self.email = email
 
 
 # controllers
@@ -47,8 +47,10 @@ def logout():
 
 @app.route("/sign_up")
 def sign_up():
-    session['logged_in'] = False;
-    return render_template('index.html')
+    if request.method == 'POST':
+        session['logged_in'] = True;
+        return render_template('index.html')
+    return render_template('sign_up.html')
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

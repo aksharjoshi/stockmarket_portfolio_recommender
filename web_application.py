@@ -54,7 +54,7 @@ def sign_up():
         test = WebUser.query.filter_by(name=username).first()
         if test is not None:
     	    return render_template('userExisted.html', username=username)
-        me = WebUser(username, datetime.utcnow(), pwd, email)
+        me = WebUser(name=username, time=datetime.utcnow(), password=pwd, email=email)
         app.logger.info(me.id)
         db.session.add(me)
         db.session.commit()

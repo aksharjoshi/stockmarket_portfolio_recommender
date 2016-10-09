@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, session
 app = Flask(__name__)
 
 # controllers
@@ -14,5 +14,17 @@ def page_not_found(e):
 def index():
     return render_template('index.html')
 
+@app.route("/logout")
+def logout():
+    session['logged_in'] = False;
+    return render_template('index.html')
+
+@app.route("/login_signin")
+def login_signin():
+    session['logged_in'] = True;
+    return render_template('index.html')
+
+# set the secret key.  keep this really secret:
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 if __name__ == '__main__':
     app.run()

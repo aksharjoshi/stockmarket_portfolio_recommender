@@ -49,7 +49,7 @@ def logout():
 def sign_up():
     if request.method == 'POST':
         username = request.form['uname']
-        pwd = request.form['pwd']
+        pwd = request.form['psw']
         email = request.form['email']
         test = WebUser.query.filter_by(name=username).first()
         if test is not None:
@@ -66,7 +66,7 @@ def sign_up():
 def login():
     if request.method == 'POST':
         username = request.form['uname']
-        pwd = request.form['pwd']
+        pwd = request.form['psw']
         test = WebUser.query.filter_by(name=username).filter_by(password=pwd).first()
         if test is None:
     		return render_template('noMatch.html')

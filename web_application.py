@@ -54,7 +54,7 @@ def sign_up():
         test = WebUser.query.filter_by(name=username).first()
         if test is not None:
     		return render_template('userExisted.html', username=username)
-        me = User(username, datetime.utcnow(), pwd, email)
+        me = WebUser(username, datetime.utcnow(), pwd, email)
         db.session.add(me)
         db.session.commit()
         session['username'] = username;
@@ -67,7 +67,7 @@ def login():
     if request.method == 'POST':
         username = request.form['uname']
         pwd = request.form['pwd']
-        test = WebUser.query.filter_by(name=username, password=pwd).first()
+        test = WebUser.query.filter_by(name=username).filter_by(password=pwd).first()
         if test is None:
     		return render_template('noMatch.html')
         session['logged_in'] = True;

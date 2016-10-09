@@ -27,7 +27,8 @@
           {% block navbar_right %}
           <ul class="nav navbar-nav pull-right">
             {% if not session.logged_in %}
-              <li><a href="{{ url_for('login_signin') }}">Login or Signup</a></li>
+              <li><a href="{{ url_for('login') }}">Login</a></li>
+              <li><a href="{{ url_for('sign_up') }}">Signin</a></li>
             {% else %}
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}

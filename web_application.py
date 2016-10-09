@@ -20,7 +20,7 @@ class WebUser(db.Model):
 	time = db.Column(db.DateTime)
 	password = db.Column(db.String(80))
 	email = db.Column(db.String(80))
-	def __init__(self, name, time, password):
+	def __init__(self, name, time, password, email):
 		self.name = name
 		self.time = time
 		self.password = password

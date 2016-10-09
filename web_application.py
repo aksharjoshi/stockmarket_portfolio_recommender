@@ -48,6 +48,16 @@ def logout():
 @app.route("/sign_up", methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
+        username = request.form['uname']
+        pwd = request.form['pwd']
+        email = request.form['email']
+        test = WebUser.query.filter_by(name=username).first()
+        if test is not None:
+    		return render_template('userExisted.html', username=username)
+        me = User(username, datetime.utcnow(), pwd, email)
+        db.session.add(me)
+        db.session.commit()
+        session['username'] = username;
         session['logged_in'] = True;
         return render_template('index.html')
     return render_template('sign_up.html')
@@ -55,7 +65,13 @@ def sign_up():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        username = request.form['uname']
+        pwd = request.form['pwd']
+        test = WebUser.query.filter_by(name=username, password=pwd).first()
+        if test is None:
+    		return render_template('noMatch.html')
         session['logged_in'] = True;
+        session['username'] = username;
         return render_template('index.html')
     return render_template('login.html')
 

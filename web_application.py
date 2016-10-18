@@ -47,7 +47,7 @@ def index():
         buyCommision = request.form['buyCommision']
         taxRate = request.form['taxRate']
         symbol_name = ""
-        url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(argv)
+        url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
         result = request.get(url).json()
         for x in result['ResultSet']['Result']:
             if x['symbol'] == argv:

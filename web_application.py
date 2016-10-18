@@ -53,13 +53,13 @@ def index():
             if x['symbol'] == argv:
                 symbol_name =  x['name']
                 break
-        print "Symbol Name\n"
-        print str(symbol_name) + "\n"
-        print "PROFIT REPORT:\n"
-        print "Proceeds\n"
-        print "$" + str(allotment * finalSharePrice) + "\n"
-        print "\n"
-        print "Cost\n"
+        return "Symbol Name\n"
+            str(symbol_name) + "\n"
+            "PROFIT REPORT:\n"
+            "Proceeds\n"
+            "$" + str(allotment * finalSharePrice) + "\n"
+            "\n"
+            "Cost\n"
     return render_template('index.html')
 
 @app.route("/logout")

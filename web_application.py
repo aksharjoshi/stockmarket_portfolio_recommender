@@ -52,20 +52,22 @@ def index():
         taxPaid = 0
         if pureProfit > 0:
             taxPaid = pureProfit * taxRate / 100
+            session.flag = true
         totalCost = sellCommision + buyCommision + initialPaid + taxPaid
         returnRate = (totalSell - totalCost) / totalCost / 100
         breakEven = (sellCommision + buyCommision) / allotment + initialSharePrice
-        netProfit = '{:.2%}'.format(totalSell - totalCost)
-        totalSell = '{:.2%}'.format(totalSell)
-        totalCost = '{:.2%}'.format(totalCost)
-        initialPaid = '{:.2%}'.format(initialPaid)
-        buyCommision = '{:.2%}'.format(buyCommision)
-        sellCommision = '{:.2%}'.format(sellCommision)
-        taxPaid = '{:.2%}'.format(taxPaid)
-        pureProfit = '{:.2%}'.format(pureProfit)
+        netProfit = '{:.2}'.format(totalSell - totalCost)
+        totalSell = '{:.2}'.format(totalSell)
+        totalCost = '{:.2}'.format(totalCost)
+        initialPaid = '{:.2}'.format(initialPaid)
+        buyCommision = '{:.2}'.format(buyCommision)
+        sellCommision = '{:.2}'.format(sellCommision)
+        taxPaid = '{:.2}'.format(taxPaid)
+        taxRate = '{:+.2%}'.format(taxRate)
+        pureProfit = '{:+.2}'.format(pureProfit)
         returnRate = '{:.2%}'.format(returnRate)
-        breakEven = '{:.2%}'.format(breakEven)
-        return render_template('calculator.html', totalSell=totalSell)
+        breakEven = '{:.2}'.format(breakEven)
+        return render_template('calculator.html', totalSell=totalSell, totalCost=totalCost, netProfit=netProfit, initialPaid=initialPaid, buyCommision=buyCommision, sellCommision=sellCommision, taxPaid=taxPaid, pureProfit=pureProfit, returnRate=returnRate, breakEven=breakEven, allotment=allotment, initialSharePrice=initialSharePrice, taxRate=taxRate)
     return render_template('index.html')
 
 @app.route("/logout")

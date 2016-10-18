@@ -6,7 +6,24 @@
 <body>
 <h1> PROFIT REPORT</h1>
 <h2>Proceeds</h2>
-<div>{{totalSell}}</div>
+<div>${{totalSell}}</div>
+<h2>Cosr</h2>
+<div>${{totalCost}}</div>
+<h2>Cost details:</h2>
+<div>Total Purchase Price</div>
+<div>{{allotment}} X ${{initialSharePrice}} = {{initialPaid}}</div>
+<div>Buy Commission = {{buyCommision}}</div>
+<div>Sell Commission = {{sellCommision}}</div>
+{% if session.flag %}
+<div>Tax on Capital Gain = {{taxRate}} of ${{pureProfit}} = ${{taxPaid}}</div>
+{% else %}
+<div>Tax on Capital Gain = {{taxPaid}}</div>
+<h2>Net Profit</h2>
+<div>${{netProfit}}</div>
+<h2>Return on Investment</h2>
+<div>{{returnRate}}</div>
+<h2>To break even, you should have a final share price of</h2>
+<div>${{breakEven}}</div>
 </body>
 </html>
 {% endblock %}

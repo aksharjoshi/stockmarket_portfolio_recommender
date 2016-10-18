@@ -1,5 +1,4 @@
 from flask import Flask, render_template, send_from_directory, session, request
-import requests
 import os
 import sys
 import logging
@@ -49,7 +48,7 @@ def index():
         taxRate = request.form['taxRate']
         symbol_name = ""
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(argv)
-        result = requests.get(url).json()
+        result = request.get(url).json()
         for x in result['ResultSet']['Result']:
             if x['symbol'] == argv:
                 symbol_name =  x['name']

@@ -1,4 +1,5 @@
 from flask import Flask, render_template, send_from_directory, session, request
+import requests
 import os
 import sys
 import logging
@@ -36,8 +37,30 @@ class WebUser(db.Model):
 def page_not_found(e):
     return render_template('404.html'), 404
 
-@app.route("/")
+@app.route("/", , methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        symbol = request.form['symbol']
+        allotment = request.form['allotment']
+        finalSharePrice = request.form['finalSharePrice']
+        sellCommision = request.form['sellCommision']
+        initialSharePrice = request.form['initialSharePrice']
+        buyCommision = request.form['buyCommision']
+        taxRate = request.form['taxRate']
+        symbol_name = ""
+        url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(argv)
+        result = requests.get(url).json()
+        for x in result['ResultSet']['Result']:
+            if x['symbol'] == argv:
+                symbol_name =  x['name']
+                break
+        print "Symbol Name\n"
+        print str(symbol_name) + "\n"
+        print "PROFIT REPORT:\n"
+        print "Proceeds\n"
+        print "$" + str(allotment * finalSharePrice) + "\n"
+        print "\n"
+        print "Cost\n"
     return render_template('index.html')
 
 @app.route("/logout")

@@ -2,29 +2,29 @@ from flask import Flask, render_template, send_from_directory, session, request
 import os
 import sys
 import logging
-import psycopg2
+#import psycopg2
 import urlparse
-from flask.ext.sqlalchemy import SQLAlchemy
+#from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
-from flask.ext.heroku import Heroku
+#from flask.ext.heroku import Heroku
 app = Flask(__name__)
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.ERROR)
+#app.logger.addHandler(logging.StreamHandler(sys.stdout))
+#app.logger.setLevel(logging.ERROR)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/web_application.db')
-heroku = Heroku(app)
-db = SQLAlchemy(app)
+#heroku = Heroku(app)
+#db = SQLAlchemy(app)
 
-class WebUser(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(80))
-	time = db.Column(db.DateTime)
-	password = db.Column(db.String(80))
-	email = db.Column(db.String(80))
-	def __init__(self, name, time, password, email):
-		self.name = name
-		self.time = time
-		self.password = password
-		self.email = email
+#class WebUser(db.Model):
+#	id = db.Column(db.Integer, primary_key=True)
+#	name = db.Column(db.String(80))
+#	time = db.Column(db.DateTime)
+#	password = db.Column(db.String(80))
+#	email = db.Column(db.String(80))
+#	def __init__(self, name, time, password, email):
+#		self.name = name
+#		self.time = time
+#		self.password = password
+#		self.email = email
 
 
 # controllers
@@ -72,7 +72,7 @@ def index():
         netProfit = '{:.2%}'.format(totalSell - totalCost)
         returnRate = '{:.2%}'.format(returnRate)
         breakEven = '{:.2%}'.format(breakEven)
-        return render_template('calculator.html', totalSell=totalSell, totalCost=totalCost, initialPaid=initialPaid, buyCommision=buyCommision, sellCommision=sellCommision, taxPaid=taxPaid, pureProfit=pureProfit, netProfit=netProfit, returnRate=returnRate, breakEven=breakEven)
+        return render_template('calculator.html', totalSell=totalSell)
     return render_template('index.html')
 
 @app.route("/logout")

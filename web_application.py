@@ -2,29 +2,29 @@ from flask import Flask, render_template, send_from_directory, session, request
 import os
 import sys
 import logging
-#import psycopg2
+import psycopg2
 import urlparse
-#from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
-#from flask.ext.heroku import Heroku
+from flask.ext.heroku import Heroku
 app = Flask(__name__)
-#app.logger.addHandler(logging.StreamHandler(sys.stdout))
-#app.logger.setLevel(logging.ERROR)
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/web_application.db')
-#heroku = Heroku(app)
-#db = SQLAlchemy(app)
+heroku = Heroku(app)
+db = SQLAlchemy(app)
 
-#class WebUser(db.Model):
-#	id = db.Column(db.Integer, primary_key=True)
-#	name = db.Column(db.String(80))
-#	time = db.Column(db.DateTime)
-#	password = db.Column(db.String(80))
-#	email = db.Column(db.String(80))
-#	def __init__(self, name, time, password, email):
-#		self.name = name
-#		self.time = time
-#		self.password = password
-#		self.email = email
+class WebUser(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(80))
+	time = db.Column(db.DateTime)
+	password = db.Column(db.String(80))
+	email = db.Column(db.String(80))
+	def __init__(self, name, time, password, email):
+		self.name = name
+		self.time = time
+		self.password = password
+		self.email = email
 
 
 # controllers
@@ -45,28 +45,29 @@ def index():
         sellCommision = float(request.form['sellCommission'])
         initialSharePrice = float(request.form['initialSharePrice'])
         buyCommision = float(request.form['buyCommission'])
-        taxRate = float(request.form['taxRate'])
+        taxRate = float(request.form['taxRate']) / 100
         totalSell = allotment * finalSharePrice
         initialPaid = allotment * initialSharePrice
-        pureProfit = totalSell - initialPaid
+        pureProfit = totalSell - initialPaid - sellCommision - buyCommision
         taxPaid = 0
+        session['flag'] = False;
         if pureProfit > 0:
-            taxPaid = pureProfit * taxRate / 100
+            taxPaid = pureProfit * taxRate
             session['flag'] = True;
         totalCost = sellCommision + buyCommision + initialPaid + taxPaid
-        returnRate = (totalSell - totalCost) / totalCost / 100
+        returnRate = (totalSell - totalCost) / totalCost
         breakEven = (sellCommision + buyCommision) / allotment + initialSharePrice
-        netProfit = '{:.2}'.format(totalSell - totalCost)
-        totalSell = '{:.2}'.format(totalSell)
-        totalCost = '{:.2}'.format(totalCost)
-        initialPaid = '{:.2}'.format(initialPaid)
-        buyCommision = '{:.2}'.format(buyCommision)
-        sellCommision = '{:.2}'.format(sellCommision)
-        taxPaid = '{:.2}'.format(taxPaid)
-        taxRate = '{:+.2%}'.format(taxRate)
-        pureProfit = '{:+.2}'.format(pureProfit)
+        netProfit = '{:.2f}'.format(totalSell - totalCost)
+        totalSell = '{:.2f}'.format(totalSell)
+        totalCost = '{:.2f}'.format(totalCost)
+        initialPaid = '{:.2f}'.format(initialPaid)
+        buyCommision = '{:.2f}'.format(buyCommision)
+        sellCommision = '{:.2f}'.format(sellCommision)
+        taxPaid = '{:.2f}'.format(taxPaid)
+        taxRate = '{:.2%}'.format(taxRate)
+        pureProfit = '{:.2f}'.format(pureProfit)
         returnRate = '{:.2%}'.format(returnRate)
-        breakEven = '{:.2}'.format(breakEven)
+        breakEven = '{:.2f}'.format(breakEven)
         return render_template('calculator.html', totalSell=totalSell, totalCost=totalCost, netProfit=netProfit, initialPaid=initialPaid, buyCommision=buyCommision, sellCommision=sellCommision, taxPaid=taxPaid, pureProfit=pureProfit, returnRate=returnRate, breakEven=breakEven, allotment=allotment, initialSharePrice=initialSharePrice, taxRate=taxRate)
     return render_template('index.html')
 

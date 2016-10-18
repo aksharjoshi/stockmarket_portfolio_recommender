@@ -52,7 +52,7 @@ def index():
         taxPaid = 0
         if pureProfit > 0:
             taxPaid = pureProfit * taxRate / 100
-            session.flag = true
+            session['flag'] = True;
         totalCost = sellCommision + buyCommision + initialPaid + taxPaid
         returnRate = (totalSell - totalCost) / totalCost / 100
         breakEven = (sellCommision + buyCommision) / allotment + initialSharePrice

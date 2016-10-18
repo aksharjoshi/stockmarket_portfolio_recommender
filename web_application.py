@@ -42,9 +42,9 @@ def index():
         symbol = request.form['symbol']
         allotment = request.form['allotment']
         finalSharePrice = request.form['finalSharePrice']
-        sellCommision = request.form['sellCommision']
+        sellCommision = request.form['sellCommission']
         initialSharePrice = request.form['initialSharePrice']
-        buyCommision = request.form['buyCommision']
+        buyCommision = request.form['buyCommission']
         taxRate = request.form['taxRate']
         symbol_name = ""
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
@@ -72,7 +72,7 @@ def index():
         netProfit = '{:.2%}'.format(totalSell - totalCost)
         returnRate = '{:.2%}'.format(returnRate)
         breakEven = '{:.2%}'.format(breakEven)
-        return render_template('calculator.html', totalSell=totalSell)
+        return render_template('calculator.html')
     return render_template('index.html')
 
 @app.route("/logout")

@@ -53,13 +53,26 @@ def index():
             if x['symbol'] == argv:
                 symbol_name =  x['name']
                 break
-        return "Symbol Name\n"
-            str(symbol_name) + "\n"
-            "PROFIT REPORT:\n"
-            "Proceeds\n"
-            "$" + str(allotment * finalSharePrice) + "\n"
-            "\n"
-            "Cost\n"
+        totalSell = allotment * finalSharePrice
+        initialPaid = allotment * initialSharePrice
+        pureProfit = totalSell - initialPaid
+        taxPaid = 0
+        if pureProfit > 0:
+            taxPaid = pureProfit * taxRate / 100
+        totalCost = sellCommision + buyCommision + initialPaid + taxPaid
+        returnRate = (totalSell - totalCost) / totalCost / 100
+        breakEven = (sellCommision + buyCommision) / allotment + initialSharePrice
+        totalSell = '{:.2%}'.format(totalSell)
+        totalCost = '{:.2%}'.format(totalCost)
+        initialPaid = '{:.2%}'.format(initialPaid)
+        buyCommision = '{:.2%}'.format(buyCommision)
+        sellCommision = '{:.2%}'.format(sellCommision)
+        taxPaid = '{:.2%}'.format(taxPaid)
+        pureProfit = '{:.2%}'.format(pureProfit)
+        netProfit = '{:.2%}'.format(totalSell - totalCost)
+        returnRate = '{:.2%}'.format(returnRate)
+        breakEven = '{:.2%}'.format(breakEven)
+        return render_template('calculator.html', totalSell=totalSell, totalCost=totalCost, initialPaid=initialPaid, buyCommision=buyCommision, sellCommision=sellCommision, taxPaid=taxPaid, pureProfit=pureProfit, netProfit=netProfit, returnRate=returnRate, breakEven=breakEven)
     return render_template('index.html')
 
 @app.route("/logout")

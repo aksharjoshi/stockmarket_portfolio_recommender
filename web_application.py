@@ -55,6 +55,7 @@ def index():
         totalCost = sellCommision + buyCommision + initialPaid + taxPaid
         returnRate = (totalSell - totalCost) / totalCost / 100
         breakEven = (sellCommision + buyCommision) / allotment + initialSharePrice
+        netProfit = '{:.2%}'.format(totalSell - totalCost)
         totalSell = '{:.2%}'.format(totalSell)
         totalCost = '{:.2%}'.format(totalCost)
         initialPaid = '{:.2%}'.format(initialPaid)
@@ -62,7 +63,6 @@ def index():
         sellCommision = '{:.2%}'.format(sellCommision)
         taxPaid = '{:.2%}'.format(taxPaid)
         pureProfit = '{:.2%}'.format(pureProfit)
-        netProfit = '{:.2%}'.format(totalSell - totalCost)
         returnRate = '{:.2%}'.format(returnRate)
         breakEven = '{:.2%}'.format(breakEven)
         return render_template('calculator.html', totalSell=totalSell)

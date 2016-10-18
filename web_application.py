@@ -40,12 +40,12 @@ def page_not_found(e):
 def index():
     if request.method == 'POST':
         symbol = request.form['symbol']
-        allotment = request.form['allotment']
-        finalSharePrice = request.form['finalSharePrice']
-        sellCommision = request.form['sellCommission']
-        initialSharePrice = request.form['initialSharePrice']
-        buyCommision = request.form['buyCommission']
-        taxRate = request.form['taxRate']
+        allotment = float(request.form['allotment'])
+        finalSharePrice = float(request.form['finalSharePrice'])
+        sellCommision = float(request.form['sellCommission'])
+        initialSharePrice = float(request.form['initialSharePrice'])
+        buyCommision = float(request.form['buyCommission'])
+        taxRate = float(request.form['taxRate'])
         totalSell = allotment * finalSharePrice
         initialPaid = allotment * initialSharePrice
         pureProfit = totalSell - initialPaid

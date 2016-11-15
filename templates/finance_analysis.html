@@ -2,5 +2,9 @@
 {% block title %}Welcome to Finance Analysis Engine{% endblock %}
 {% block content %}
   <h1>Finance Analysis Engine</h1>
-  <p><a href="{{ url_for('index') }}">home</a></p>
+   <form action="" method="post">
+      <label><b>Symbol</b></label>
+      <input type="text" placeholder="Enter Stock Name" name="stockname" required>
+      <button type="submit">Generate Engine Report</button>
+  </form>
 {% endblock %}

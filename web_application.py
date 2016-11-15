@@ -113,9 +113,39 @@ def login():
         return render_template('index.html')
     return render_template('login.html')
 
-@app.route("/finance_analysis")
+@app.route("/finance_analysis", methods=['GET', 'POST'])
 def finance_analysis():
+    if request.method == 'POST':
+        stockname = request.form['stockname']
+        price, change, perchange = fetchPreMarket(stockname)
+        if change == "error":
+            return render_template('invalid.html')
+        url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(stockname)
+            result = requests.get(url).json()
+            check_time = strftime("%a %d %b %Y %H:%M:%S %Z", gmtime())
+            for x in result['ResultSet']['Result']:
+                if x['symbol'] == stockname:
+                    print x['name']
+                    break
+            s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
+        return render_template('engine_recommend_result.html', checktime=check_time, result=s)
     return render_template('finance_analysis.html')
+
+def fetchPreMarket(symbol):
+    link = "http://finance.google.com/finance/info?client=ig&q="
+    url = link+"%s:%s" % ("NASDAQ", symbol)
+    try:
+        u = urllib2.urlopen(url)
+        content = u.read()
+        data = json.loads(content[3:])
+        info = data[0]
+        price = float(info["l_fix"])
+        base = float(info["pcls_fix"])
+        change = info["c"]
+        perchange = '{:+.2%}'.format((price - base)/base)
+        return (price, change, perchange)
+    except (urllib2.HTTPError, urllib2.URLError), err:
+        return (err, "error", "")
 
 
 # set the secret key.  keep this really secret:

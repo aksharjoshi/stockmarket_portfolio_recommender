@@ -6,7 +6,7 @@ import psycopg2
 import urlparse
 from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
-from requests import requests
+import requests
 from time import gmtime, strftime
 from flask.ext.heroku import Heroku
 app = Flask(__name__)

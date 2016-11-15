@@ -121,13 +121,13 @@ def finance_analysis():
         if change == "error":
             return render_template('invalid.html')
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(stockname)
-            result = requests.get(url).json()
-            check_time = strftime("%a %d %b %Y %H:%M:%S %Z", gmtime())
-            for x in result['ResultSet']['Result']:
-                if x['symbol'] == stockname:
-                    print x['name']
-                    break
-            s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
+        result = requests.get(url).json()
+        check_time = strftime("%a %d %b %Y %H:%M:%S %Z", gmtime())
+        for x in result['ResultSet']['Result']:
+            if x['symbol'] == stockname:
+                print x['name']
+                break
+        s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
         return render_template('engine_recommend_result.html', checktime=check_time, result=s)
     return render_template('finance_analysis.html')
 

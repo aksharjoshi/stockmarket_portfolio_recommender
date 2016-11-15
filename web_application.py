@@ -109,6 +109,10 @@ def login():
         return render_template('index.html')
     return render_template('login.html')
 
+@app.route("/finance_analysis")
+def finance_analysis():
+    return render_template('finance_analysis.html')
+
 
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

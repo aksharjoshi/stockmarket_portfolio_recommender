@@ -9,7 +9,9 @@ from datetime import datetime
 import requests
 from time import gmtime, strftime
 from flask.ext.heroku import Heroku
+from flask_bootstrap import Bootstrap
 app = Flask(__name__)
+Bootstrap(app)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/web_application.db')

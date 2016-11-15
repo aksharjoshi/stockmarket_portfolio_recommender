@@ -1,9 +1,29 @@
 {% extends "base.html" %}
 {% block title %} - Engine Recommend Result{% endblock %}
 
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='bootstrap.min.css')}}">
+{% endblock %}
+
 {% block content %}
 <h1>Engine Recommend Result</h1>
 	<div>Checking Time: {{checktime}}</div>
     <div>{{result}}</div>
+
+<div class="input-group">
+  <div class="input-group-btn">
+    <!-- Button and dropdown menu -->
+  </div>
+  <input type="text" class="form-control" aria-label="...">
+</div>
+
+<div class="input-group">
+  <input type="text" class="form-control" aria-label="...">
+  <div class="input-group-btn">
+    <!-- Button and dropdown menu -->
+  </div>
+</div>
 {% endblock %}
 

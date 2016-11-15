@@ -4,6 +4,8 @@ import sys
 import logging
 import psycopg2
 import urlparse
+import urllib2 
+import json
 from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
 import requests

@@ -6,6 +6,8 @@ import psycopg2
 import urlparse
 from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
+from requests import requests
+from time import gmtime, strftime
 from flask.ext.heroku import Heroku
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -106,6 +108,10 @@ def login():
         session['username'] = username;
         return render_template('index.html')
     return render_template('login.html')
+
+@@app.route("/finance_analysis")
+def finance_analysis():
+    return render_template('finance_analysis.html')
 
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

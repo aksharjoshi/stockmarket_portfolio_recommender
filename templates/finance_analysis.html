@@ -6,9 +6,9 @@
       <label><b>Invest Amount</b></label>
       <input type="text" placeholder="Enter Invest Amount" name="amount" required>
       <div class="checkbox">
-      <label><input type="checkbox" name="ethical" id="ethical">Ethical Investing</label>
+      <label><input type="checkbox" name="ethical" id="ethical" onclick="ethical_onclick()">Ethical Investing</label>
       </div>
-      <div id="ethical_children">
+      <div id="ethical_children" style="visibility: hidden;">
        <div class="form-group">
        <label><input type="checkbox" name="1" id="1">Ethical Investing Name1</label>
        <label><input type="checkbox" name="2" id="2">Ethical Investing Name2</label>
@@ -61,21 +61,14 @@
       <button type="submit">Generate Engine Report</button>
   </form>
   <script type=text/javascript>
-  var myform = document.getElementById("#myForm"),
-      ethical = document.getElementById("#ethical"),
-      ethical_children = document.getElementById("#ethical_children");
-
-  ethical_children.hide();
-
-  ethical.on("click", function() {
-    if($(this).is(':checked')) {
-      ethical_children.show();
-       console.log("hello world");
+  function ethical_onclick () {
+  $('#ethical').change(function() {
+    if ($('#ethical').prop('checked')) {
+        $('#ethical_children').show();
     } else {
-      ethical_children.hide();
+        $('#ethical_children').hide();
     }
-  })
-
-  console.log("hello world");
+   });
+}
 </script>
 {% endblock %}

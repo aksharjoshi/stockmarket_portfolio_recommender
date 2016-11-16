@@ -5,15 +5,18 @@
   var ethical = $('#ethical'),
       ethical_children = $('#ethical_children');
 
-ethical_children.hide();
+  ethical_children.hide();
 
-ethical.on('click', function() {
+  ethical.on('click', function() {
     if($(this).is(':checked')) {
       ethical_children.show();
+       console.log('hello world')
     } else {
       ethical_children.hide();
     }
-})
+  })
+
+  console.log('hello world')
 </script>
 {% endblock %}
 {% block content %}

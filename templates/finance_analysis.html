@@ -10,10 +10,8 @@ ethical_children.hide();
 ethical.on('click', function() {
     if($(this).is(':checked')) {
       ethical_children.show();
-      ethical_children.find('input').attr('required', true);
     } else {
       ethical_children.hide();
-      ethical_children.find('input').attr('required', false);
     }
 })
 </script>

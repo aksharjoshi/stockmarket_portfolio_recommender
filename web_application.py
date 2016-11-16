@@ -123,12 +123,13 @@ def finance_analysis():
         url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(stockname)
         result = requests.get(url).json()
         check_time = strftime("%a %d %b %Y %H:%M:%S %Z", gmtime())
+        real_name = 'unknown'
         for x in result['ResultSet']['Result']:
             if x['symbol'] == stockname:
                 real_name=x['name']
                 break
         s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
-        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name+real_name)
+        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name)
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):

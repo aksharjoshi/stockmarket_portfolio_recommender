@@ -16,8 +16,8 @@
        </div>
        </div>
        <div class="checkbox">
-      <label><input type="checkbox" name="growth" id="growth">Growth Investing</label>
-      <div id="growth_children">
+      <label><input type="checkbox" name="growth" id="growth" onclick="growth_onclick()">Growth Investing</label>
+      <div id="growth_children" style="display: none;">
        <div class="form-group">
        <label><input type="checkbox" name="4" id="4">Growth Investing Name1</label>
        <label><input type="checkbox" name="5" id="5">Growth Investing Name2</label>
@@ -26,8 +26,8 @@
        </div>
       </div>
        <div class="checkbox">
-     <label><input type="checkbox" name="index" id="index">Index Investing</label>
-     <div id="index_children">
+     <label><input type="checkbox" name="index" id="index" onclick="index_onclick()">Index Investing</label>
+     <div id="index_children" style="display: none;">
        <div class="form-group">
        <label><input type="checkbox" name="7" id="7">Index Investing Name1</label>
        <label><input type="checkbox" name="8" id="8">Index Investing Name2</label>
@@ -36,8 +36,8 @@
        </div>
       </div>
        <div class="checkbox">
-      <label><input type="checkbox" name="quality" id="quality">Quality Investing</label>
-      <div id="quality_children">
+      <label><input type="checkbox" name="quality" id="quality" onclick="quality_onclick()">Quality Investing</label>
+      <div id="quality_children" style="display: none;">
        <div class="form-group">
        <label><input type="checkbox" name="10" id="10">Quality Investing Name1</label>
        <label><input type="checkbox" name="11" id="11">Quality Investing Name2</label>
@@ -46,8 +46,8 @@
        </div>
       </div>
        <div class="checkbox">
-      <label><input type="checkbox" name="value" id="value">Value Investing</label>
-      <div id="value_children">
+      <label><input type="checkbox" name="value" id="value" onclick="value_onclick()">Value Investing</label>
+      <div id="value_children" style="display: none;">
        <div class="form-group">
        <label><input type="checkbox" name="4" id="4">Value Investing Name1</label>
        <label><input type="checkbox" name="5" id="5">Value Investing Name2</label>
@@ -67,6 +67,46 @@
         $('#ethical_children').show();
     } else {
         $('#ethical_children').hide();
+    }
+   });
+}
+
+  function growth_onclick () {
+  $('#growth').change(function() {
+    if ($('#growth').prop('checked')) {
+        $('#growth_children').show();
+    } else {
+        $('#growth_children').hide();
+    }
+   });
+}
+
+function index_onclick () {
+  $('#index').change(function() {
+    if ($('#index').prop('checked')) {
+        $('#index_children').show();
+    } else {
+        $('#index_children').hide();
+    }
+   });
+}
+
+function quality_onclick () {
+  $('#quality').change(function() {
+    if ($('#quality').prop('checked')) {
+        $('#quality_children').show();
+    } else {
+        $('#quality_children').hide();
+    }
+   });
+}
+
+function value_onclick () {
+  $('#value').change(function() {
+    if ($('#value').prop('checked')) {
+        $('#value_children').show();
+    } else {
+        $('#value_children').hide();
     }
    });
 }

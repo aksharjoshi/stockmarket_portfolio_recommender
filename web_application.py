@@ -125,10 +125,10 @@ def finance_analysis():
         check_time = strftime("%a %d %b %Y %H:%M:%S %Z", gmtime())
         for x in result['ResultSet']['Result']:
             if x['symbol'] == stockname:
-                print x['name']
+                real_name=x['name']
                 break
         s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
-        return render_template('engine_recommend_result.html', checktime=check_time, result=s)
+        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name+real_name)
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):

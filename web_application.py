@@ -148,11 +148,11 @@ def finance_analysis():
             price, change, perchange = fetchPreMarket(val)
             if change == "error":
                 continue
-            url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(stockname)
+            url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(val)
             result = requests.get(url).json()
             real_name = 'unknown'
             for x in result['ResultSet']['Result']:
-                if x['symbol'] == stockname:
+                if x['symbol'] == val:
                     real_name=x['name']
                     break
             s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'

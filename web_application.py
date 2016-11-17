@@ -117,7 +117,7 @@ def login():
 def finance_analysis():
     ethical_stock_name = ['APPL', 'ADBE', 'NSRGY']
     growth_stock_name = ['IUSG', 'VONG', 'SCHG']
-    index_stcok_name = ['VTI', 'IXUS', 'ILTB']
+    index_stock_name = ['VTI', 'IXUS', 'ILTB']
     quality_stock_name = ['FB', 'MSFT', 'GOOG']
     value_stock_name = ['AMZN', 'ETN', 'CMI']
     if request.method == 'POST':

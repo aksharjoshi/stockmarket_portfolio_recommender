@@ -39,9 +39,9 @@ class WebUser(db.Model):
 #    return send_from_directory(os.path.join(app.root_path, 'static'), 'ico/favicon.ico')
 
 class Stock:
-    def __init__(self, name, current_condition, single_value):
+    def __init__(self, name, condition, single_value):
         self.name = name
-        self.current_condition = current_condition
+        self.condition = condition
         self.quantity = 0
         self.value = 0
         self.single_value = single_value

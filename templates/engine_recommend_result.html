@@ -10,10 +10,8 @@
 <table>
 {% for t in nameAndValue %}
     <tr>
-    {% for i in t %}
         <td>{{ i.name }}</td>
         <td>{{ i.current_condition }}</td>
-    {% endfor %}
     </tr>
 {% endfor %}
  </table>

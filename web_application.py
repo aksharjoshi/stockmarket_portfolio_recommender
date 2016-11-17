@@ -203,7 +203,7 @@ def finance_analysis():
             if x['symbol'] == stockname:
                 real_name=x['name']
                 break
-        s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
+        s = change + ' ' + '(' + str(perchange) + ')'
         return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name, nameAndValue=nameAndValue)
     return render_template('finance_analysis.html')
 

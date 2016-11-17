@@ -7,13 +7,27 @@
 	<div>Checking Time: {{checktime}}</div>
     <div>{{result}}</div>
 <div>
-<table>
-{% for t in nameAndValue %}
+<table class="table table-striped">
+<thead>
+    <tr>
+      <th>Company Name</th>
+      <th>Price</th>
+      <th>Condition</th>
+      <th>Quantiy</th>
+      <th>Total Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for t in nameAndValue %}
     <tr>
         <td>{{ t.name }}</td>
-        <td>{{ t.current_condition }}</td>
+        <td>{{ t.single_value }}</td>
+        <td>{{ t.condition }}</td>
+        <td>{{ t.quantity }}</td>
+        <td>{{ t.value }}</td>
     </tr>
 {% endfor %}
+</tbody>
  </table>
  </div>
   

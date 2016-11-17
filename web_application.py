@@ -187,8 +187,7 @@ def finance_analysis():
                     real_name=x['name']
                     break
             s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
-            temp = []
-            temp.extend([real_name, s])
+            temp = Stock(real_name, s, price)
             nameAndValue.append(temp)
         stockname = request.form['stockname']
         total_money = request.form['amount']

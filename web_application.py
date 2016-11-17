@@ -42,7 +42,7 @@ class Stock:
     def __init__(self, name, current_condition, single_value):
         self.name = name
         self.current_condition = current_condition
-        self.quanity = 0
+        self.quantity = 0
         self.value = 0
         self.single_value = single_value
     def buy_stock(self, quantity, value):
@@ -187,7 +187,7 @@ def finance_analysis():
                 if x['symbol'] == val:
                     real_name=x['name']
                     break
-            s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
+            s = change + ' ' + '(' + str(perchange) + ')'
             temp = Stock(real_name, s, price)
             nameAndValue.append(temp)
         stockname = request.form['stockname']
@@ -203,7 +203,7 @@ def finance_analysis():
             if x['symbol'] == stockname:
                 real_name=x['name']
                 break
-        s = change + ' ' + '(' + str(perchange) + ')'
+        s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
         return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name, nameAndValue=nameAndValue)
     return render_template('finance_analysis.html')
 

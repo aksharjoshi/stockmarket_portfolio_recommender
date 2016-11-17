@@ -38,6 +38,18 @@ class WebUser(db.Model):
 #def favicon():
 #    return send_from_directory(os.path.join(app.root_path, 'static'), 'ico/favicon.ico')
 
+class Stock:
+    def __init__(self, name, current_condition, single_value):
+        self.name = name
+        self.current_condition = current_condition
+        self.quanity = 0
+        self.value = 0
+        self.single_value = single_value
+    def buy_stock(self, quantity, value):
+        self.quantity = quantity
+        self.value = value
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -125,25 +137,44 @@ def finance_analysis():
         total_stock_list = []
         if request.form.get("ethical"):
             ethical = True
-            for val in ethical_stock_name:
-                total_stock_list.append(val)
+            if request.form.get("1"):
+                total_stock_list.append('AAPL')
+            if request.form.get("2"):
+                total_stock_list.append('ADBE')
+            if request.form.get("3"):
+                total_stock_list.append('NSRGY')
         if request.form.get("growth"):
             growth = True
-            for val in growth_stock_name:
-                total_stock_list.append(val)
+            if request.form.get("4"):
+                total_stock_list.append('IUSG')
+            if request.form.get("5"):
+                total_stock_list.append('VONG')
+            if request.form.get("6"):
+                total_stock_list.append('SCHG')
         if request.form.get("index"):
             index = True
-            for val in index_stock_name:
-                total_stock_list.append(val)
+            if request.form.get("7"):
+                total_stock_list.append('VTI')
+            if request.form.get("8"):
+                total_stock_list.append('IXUS')
+            if request.form.get("9"):
+                total_stock_list.append('ILTB')
         if request.form.get("quality"):
             quality = True
-            for val in quality_stock_name:
-                total_stock_list.append(val)
+            if request.form.get("10"):
+                total_stock_list.append('FB')
+            if request.form.get("11"):
+                total_stock_list.append('MSFT')
+            if request.form.get("12"):
+                total_stock_list.append('GOOG')
         if request.form.get("value"):
             value = True
-            for val in value_stock_name:
-                total_stock_list.append(val)
-        nameAndValue = []
+            if request.form.get("13"):
+                total_stock_list.append('AMZN')
+            if request.form.get("14"):
+                total_stock_list.append('ETN')
+            if request.form.get("15"):
+                total_stock_list.append('CMI')
         for val in total_stock_list:
             price, change, perchange = fetchPreMarket(val)
             if change == "error":

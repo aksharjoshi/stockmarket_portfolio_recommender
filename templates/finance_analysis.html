@@ -64,8 +64,14 @@
   function ethical_onclick () {
   $('#ethical').change(function() {
     if ($('#ethical').prop('checked')) {
+        $('#1').prop('checked', true);
+        $('#2').prop('checked', true);
+        $('#3').prop('checked', true);
         $('#ethical_children').show();
     } else {
+        $('#1').prop('checked', false);
+        $('#2').prop('checked', false);
+        $('#3').prop('checked', false);
         $('#ethical_children').hide();
     }
    });

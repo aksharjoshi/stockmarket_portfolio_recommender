@@ -186,6 +186,8 @@ def fetchPreMarket(symbol):
         info = data[0]
         price = float(info["l_fix"])
         base = float(info["pcls_fix"])
+        if base == 0:
+            return (err, "error", "")
         change = info["c"]
         perchange = '{:+.2%}'.format((price - base)/base)
         return (price, change, perchange)

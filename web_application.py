@@ -145,7 +145,7 @@ def finance_analysis():
                 total_stock_list.append(val)
         nameAndValue = []
         for val in total_stock_list:
-            price, change, perchange = fetchPreMarket(var)
+            price, change, perchange = fetchPreMarket(val)
             if change == "error":
                 continue
             url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(stockname)

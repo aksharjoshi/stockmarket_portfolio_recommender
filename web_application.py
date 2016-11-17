@@ -135,6 +135,7 @@ def finance_analysis():
     if request.method == 'POST':
         ethical, growth, index, quality, value = False, False, False, False, False
         total_stock_list = []
+        nameAndValue = []
         if request.form.get("ethical"):
             ethical = True
             if request.form.get("1"):

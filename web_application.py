@@ -187,8 +187,8 @@ def finance_analysis():
                 if x['symbol'] == val:
                     real_name=x['name']
                     break
-            s = change + ' ' + '(' + str(perchange) + ')'
-            temp = Stock(real_name, s, price)
+            condition = change + ' ' + '(' + str(perchange) + ')'
+            temp = Stock(real_name, condition, price)
             nameAndValue.append(temp)
         stockname = request.form['stockname']
         total_money = request.form['amount']

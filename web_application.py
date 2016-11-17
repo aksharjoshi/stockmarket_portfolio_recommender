@@ -115,7 +115,7 @@ def login():
 
 @app.route("/finance_analysis", methods=['GET', 'POST'])
 def finance_analysis():
-    ethical_stock_name = ['APPL', 'ADBE', 'NSRGY']
+    ethical_stock_name = ['AAPL', 'ADBE', 'NSRGY']
     growth_stock_name = ['IUSG', 'VONG', 'SCHG']
     index_stock_name = ['VTI', 'IXUS', 'ILTB']
     quality_stock_name = ['FB', 'MSFT', 'GOOG']
@@ -141,7 +141,7 @@ def finance_analysis():
                 total_stock_list.append(val)
         if request.form.get("value"):
             value = True
-            for val in ethical_stock_name:
+            for val in value_stock_name:
                 total_stock_list.append(val)
         nameAndValue = []
         for val in total_stock_list:

@@ -3,23 +3,21 @@
 
 {% block content %}
 <h1>Engine Recommend Result</h1>
+  <div>Stock Name: {{stock_name}}</div>
 	<div>Checking Time: {{checktime}}</div>
     <div>{{result}}</div>
-<div class="btn-group" role="group" aria-label="...">
-  <button type="button" class="btn btn-default">1</button>
-  <button type="button" class="btn btn-default">2</button>
-
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Dropdown
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li><a href="#">Dropdown link</a></li>
-      <li><a href="#">Dropdown link</a></li>
-    </ul>
-  </div>
-</div>
+<div>
+<table>
+{% for t in {{nameAndValue}} %}
+    <tr>
+    {% for i in t %}
+        <td>{{ i }}</td>
+    {% endfor %}
+    </tr>
+{% endfor %}
+ </table>
+ </div>
+  
 
 {% endblock %}
 

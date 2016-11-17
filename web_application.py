@@ -115,8 +115,52 @@ def login():
 
 @app.route("/finance_analysis", methods=['GET', 'POST'])
 def finance_analysis():
+    ethical_stock_name = ['APPL', 'ADBE', 'NSRGY']
+    growth_stock_name = ['IUSG', 'VONG', 'SCHG']
+    index_stcok_name = ['VTI', 'IXUS', 'ILTB']
+    quality_stock_name = ['FB', 'MSFT', 'GOOG']
+    value_stock_name = ['AMZN', 'ETN', 'CMI']
     if request.method == 'POST':
+        ethical, growth, index, quality, value = False, False, False, False, False
+        total_stock_list = []
+        if request.form.get("ethical"):
+            ethical = True
+            for val in ethical_stock_name:
+                total_stock_list.append(val)
+        if request.form.get("growth"):
+            growth = True
+            for val in growth_stock_name:
+                total_stock_list.append(val)
+        if request.form.get("index"):
+            index = True
+            for val in index_stock_name:
+                total_stock_list.append(val)
+        if request.form.get("quality"):
+            quality = True
+            for val in quality_stock_name:
+                total_stock_list.append(val)
+        if request.form.get("value"):
+            value = True
+            for val in ethical_stock_name:
+                total_stock_list.append(val)
+        nameAndValue = []
+        for val in total_stock_list:
+            price, change, perchange = fetchPreMarket(var)
+            if change == "error":
+                continue
+            url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(stockname)
+            result = requests.get(url).json()
+            real_name = 'unknown'
+            for x in result['ResultSet']['Result']:
+                if x['symbol'] == stockname:
+                    real_name=x['name']
+                    break
+            s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
+            temp = []
+            temp.extend([real_name, s])
+            nameAndValue.append(temp)
         stockname = request.form['stockname']
+        total_money = request.form['amount']
         price, change, perchange = fetchPreMarket(stockname)
         if change == "error":
             return render_template('invalid.html')
@@ -129,7 +173,7 @@ def finance_analysis():
                 real_name=x['name']
                 break
         s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
-        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name)
+        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name, nameAndValue=nameAndValue)
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):

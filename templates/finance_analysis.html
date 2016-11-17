@@ -9,9 +9,9 @@
       <label><input type="checkbox" name="ethical" id="ethical" onclick="ethical_onclick()">Ethical Investing</label>
       <div id="ethical_children" style="display: none;">
        <div class="form-group">
-       <label><input type="checkbox" name="1" id="1">Ethical Investing Name1</label>
-       <label style="margin-left: 20px"><input type="checkbox" name="2" id="2">Ethical Investing Name2</label>
-       <label style="margin-left: 20px"><input type="checkbox" name="3" id="3">Ethical Investing Name3</label>
+       <label><input type="checkbox" name="1" id="1">Apple Inc</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="2" id="2">Adobe Systems Incorporated</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="3" id="3">Nestlé S.A.</label>
        </div>
        </div>
        </div>
@@ -19,9 +19,9 @@
       <label><input type="checkbox" name="growth" id="growth" onclick="growth_onclick()">Growth Investing</label>
       <div id="growth_children" style="display: none;">
        <div class="form-group">
-       <label><input type="checkbox" name="4" id="4">Growth Investing Name1</label>
-       <label><input type="checkbox" name="5" id="5">Growth Investing Name2</label>
-       <label><input type="checkbox" name="6" id="6">Growth Investing Name3</label>
+       <label><input type="checkbox" name="4" id="4">iShares Core Russell US Growth</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="5" id="5">Vanguard Russell 1000 Growth ETF</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="6" id="6">Schwab US Large-Cap Growth ETF </label>
        </div>
        </div>
       </div>
@@ -29,9 +29,9 @@
      <label><input type="checkbox" name="index" id="index" onclick="index_onclick()">Index Investing</label>
      <div id="index_children" style="display: none;">
        <div class="form-group">
-       <label><input type="checkbox" name="7" id="7">Index Investing Name1</label>
-       <label><input type="checkbox" name="8" id="8">Index Investing Name2</label>
-       <label><input type="checkbox" name="9" id="9">Index Investing Name3</label>
+       <label><input type="checkbox" name="7" id="7">Vanguard Total Stock Market ETF</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="8" id="8">iShares Core MSCI Total Intl Stk</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="9" id="9">iShares Core 10+ Year USD Bond</label>
        </div>
        </div>
       </div>
@@ -39,9 +39,9 @@
       <label><input type="checkbox" name="quality" id="quality" onclick="quality_onclick()">Quality Investing</label>
       <div id="quality_children" style="display: none;">
        <div class="form-group">
-       <label><input type="checkbox" name="10" id="10">Quality Investing Name1</label>
-       <label><input type="checkbox" name="11" id="11">Quality Investing Name2</label>
-       <label><input type="checkbox" name="12" id="12">Quality Investing Name3</label>
+       <label><input type="checkbox" name="10" id="10">Facebook, Inc.</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="11" id="11">Microsoft Corporation</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="12" id="12">Alphabet Inc.</label>
        </div>
        </div>
       </div>
@@ -49,9 +49,9 @@
       <label><input type="checkbox" name="value" id="value" onclick="value_onclick()">Value Investing</label>
       <div id="value_children" style="display: none;">
        <div class="form-group">
-       <label><input type="checkbox" name="4" id="4">Value Investing Name1</label>
-       <label><input type="checkbox" name="5" id="5">Value Investing Name2</label>
-       <label><input type="checkbox" name="6" id="6">Value Investing Name3</label>
+       <label><input type="checkbox" name="13" id="13">Value Investing Name1</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="14" id="14">Value Investing Name2</label>
+       <label style="margin-left: 20px"><input type="checkbox" name="15" id="15">Value Investing Name3</label>
        </div>
        </div>
       </div>
@@ -80,8 +80,14 @@
   function growth_onclick () {
   $('#growth').change(function() {
     if ($('#growth').prop('checked')) {
+        $('#4').prop('checked', true);
+        $('#5').prop('checked', true);
+        $('#6').prop('checked', true);
         $('#growth_children').show();
     } else {
+        $('#4').prop('checked', false);
+        $('#5').prop('checked', false);
+        $('#6').prop('checked', false);
         $('#growth_children').hide();
     }
    });
@@ -90,8 +96,14 @@
 function index_onclick () {
   $('#index').change(function() {
     if ($('#index').prop('checked')) {
+        $('#7').prop('checked', true);
+        $('#8').prop('checked', true);
+        $('#9').prop('checked', true);
         $('#index_children').show();
     } else {
+        $('#7').prop('checked', true);
+        $('#8').prop('checked', true);
+        $('#9').prop('checked', true);
         $('#index_children').hide();
     }
    });
@@ -100,8 +112,14 @@ function index_onclick () {
 function quality_onclick () {
   $('#quality').change(function() {
     if ($('#quality').prop('checked')) {
+        $('#10').prop('checked', true);
+        $('#11').prop('checked', true);
+        $('#12').prop('checked', true);
         $('#quality_children').show();
     } else {
+        $('#10').prop('checked', false);
+        $('#11').prop('checked', false);
+        $('#12').prop('checked', false);
         $('#quality_children').hide();
     }
    });
@@ -110,8 +128,14 @@ function quality_onclick () {
 function value_onclick () {
   $('#value').change(function() {
     if ($('#value').prop('checked')) {
+        $('#13').prop('checked', true);
+        $('#14').prop('checked', true);
+        $('#15').prop('checked', true);
         $('#value_children').show();
     } else {
+        $('#1').prop('checked', false);
+        $('#2').prop('checked', false);
+        $('#3').prop('checked', false);
         $('#value_children').hide();
     }
    });

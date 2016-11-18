@@ -195,7 +195,7 @@ def finance_analysis():
             temp = Stock(real_name, condition, float(price), val)
             nameAndValue.append(temp)
         total_money = request.form['amount']
-        nameValue, amount = RRgetQuantity(nameAndValue, total_money)
+        nameValue, spent = RRgetQuantity(nameAndValue, total_money)
         fiveDaysData = []
         start = datetime.today() - timedelta(days=7)
         end = datetime.today() - timedelta(days=1)
@@ -216,7 +216,7 @@ def finance_analysis():
         fiveDaysData.reverse()
         maxValue = max(fiveDaysData) + 100
         minValue = min(fiveDaysData) - 100
-        return render_template('engine_recommend_result.html', nameAndValue=nameAndValue, leftAmount=amount, fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+        return render_template('engine_recommend_result.html', nameAndValue=nameAndValue, leftAmount=Spent, Spent=request.form['amount'] - spent, fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, Amount=request.form['amount'])
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):

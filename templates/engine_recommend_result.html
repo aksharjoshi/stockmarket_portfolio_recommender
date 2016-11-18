@@ -3,6 +3,27 @@
 
 {% block content %}
 <h1>Engine Recommend Result</h1>
+
+<h2>Investment Amount</h2>
+<div>
+{{Amount}}
+</div>
+
+<hr>
+
+<h2>Total Spent </h2>
+
+ <div>{{Spent}}</div>
+
+ <hr> 
+
+ <h2>Left Amount </h2>
+
+ <hr>
+
+ <div>{{leftAmount}}</div>
+
+<h2>Investment Detail</h2>
 <div>
 <table class="table table-striped">
 <thead>
@@ -28,8 +49,6 @@
  </table>
  </div>
 
- <div>Left Value: {{leftAmount}}</div>
-
 
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
@@ -41,7 +60,7 @@ var chart = new CanvasJS.Chart("chartContainer",
   {
     animationEnabled: true,
     title:{
-      text: "Five Days Data"
+      text: "Five Days Profito"
     },
     axisY:{
          minimum: {{minValue}},

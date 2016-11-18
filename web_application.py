@@ -233,9 +233,9 @@ def RRgetQuantity(array, amount):
     index = 0
     count = 0
     while amount > 0 and count < length:
-        if array[index].price <= amount:
+        if array[index].single_value <= amount:
             count = 0
-            amount -= array[index].price
+            amount -= array[index].single_value
             array[index].buy_stock(array[index].quantity + 1)
         else:
             count = count + 1
@@ -244,7 +244,7 @@ def RRgetQuantity(array, amount):
         else:
             index = index + 1
     for val in array:
-        val.value = val.price * val.quantity
+        val.value = val.single_value * val.quantity
     return (array, amount)
 
 

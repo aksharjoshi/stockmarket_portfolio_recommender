@@ -45,8 +45,10 @@ class Stock:
         self.quantity = 0
         self.value = 0
         self.single_value = single_value
-    def buy_stock(self, quantity, value):
+    def buy_stock(self, quantity):
         self.quantity = quantity
+
+    def set_value(self, value):
         self.value = value
 
 
@@ -191,6 +193,7 @@ def finance_analysis():
             temp = Stock(real_name, condition, price)
             nameAndValue.append(temp)
         stockname = request.form['stockname']
+        nameValue, amount = RRgetQuantity(nameAndValue, total_money)
         total_money = request.form['amount']
         price, change, perchange = fetchPreMarket(stockname)
         if change == "error":
@@ -204,7 +207,7 @@ def finance_analysis():
                 real_name=x['name']
                 break
         s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
-        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name, nameAndValue=nameAndValue)
+        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name, nameAndValue=nameAndValue, leftAmount=amount)
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):
@@ -224,6 +227,25 @@ def fetchPreMarket(symbol):
         return (price, change, perchange)
     except (urllib2.HTTPError, urllib2.URLError), err:
         return (err, "error", "")
+
+def RRgetQuantity(array, amount):
+    length = len(array)
+    index = 0
+    count = 0
+    while (amount > 0 && count < length):
+        if array[index].price <= amount:
+            count = 0
+            amount -= array[index].price
+            array[index].buy_stock(array[index].quantity + 1)
+        else:
+            count++
+        if index == length - 1:
+            index = 0
+        else:
+            index++
+    for val in array:
+        val.value = val.price * val.quantity
+    return (array, amount)
 
 
 # set the secret key.  keep this really secret:

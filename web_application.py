@@ -7,7 +7,7 @@ import urlparse
 import urllib2 
 import json
 from flask.ext.sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
 from yahoo_finance import Share
 import requests
 from time import gmtime, strftime
@@ -198,8 +198,8 @@ def finance_analysis():
         total_money = request.form['amount']
         nameValue, amount = RRgetQuantity(nameAndValue, total_money)
         fiveDaysData = []
-        start = datetime.today() - datetime.timedelta(days=5)
-        end = datetime.today() - datetime.timedelta(days=1)
+        start = datetime.today() - timedelta(days=5)
+        end = datetime.today() - timedelta(days=1)
         start = start.strftime('%Y-%m-%d')
         end = end.strftime('%Y-%m-%d')
         for i in range(5):

@@ -232,7 +232,7 @@ def RRgetQuantity(array, amount):
     length = len(array)
     index = 0
     count = 0
-    while (amount > 0 && count < length):
+    while amount > 0 and count < length:
         if array[index].price <= amount:
             count = 0
             amount -= array[index].price

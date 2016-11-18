@@ -44,15 +44,15 @@ var chart = new CanvasJS.Chart("chartContainer",
   {
     animationEnabled: true,
     title:{
-      text: "Chart with Labels on X Axis"
+      text: "Five Days Data"
     },
     data: [
     {
       type: "column", //change type to bar, line, area, pie, etc
       dataPoints: [
-        { label: "Day 1", y: '{{fiveDaysData[0]}}' },
-        { label: "Day 2", y: '{{fiveDaysData[1]}}'},
-        { label: "Day 3",  y: '{{fiveDaysData[2]}}'},                                    
+        { label: "Day 1",  y: '{{fiveDaysData[0]}}' },
+        { label: "Day 2",  y: '{{fiveDaysData[1]}}' },
+        { label: "Day 3",  y: '{{fiveDaysData[2]}}' },              
         { label: "Day 4",  y: '{{fiveDaysData[3]}}' },
         { label: "Day 5",  y: '{{fiveDaysData[4]}}' }
       ]
@@ -61,7 +61,6 @@ var chart = new CanvasJS.Chart("chartContainer",
     });
 
   chart.render();
-}
 </script>
 
 {% endblock %}

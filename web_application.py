@@ -190,7 +190,7 @@ def finance_analysis():
                     real_name=x['name']
                     break
             condition = change + ' ' + '(' + str(perchange) + ')'
-            temp = Stock(real_name, condition, price)
+            temp = Stock(real_name, condition, float(price))
             nameAndValue.append(temp)
         stockname = request.form['stockname']
         total_money = request.form['amount']
@@ -232,6 +232,7 @@ def RRgetQuantity(array, amount):
     length = len(array)
     index = 0
     count = 0
+    amount = float(amount)
     while amount > 0 and count < length:
         if array[index].single_value <= amount:
             count = 0

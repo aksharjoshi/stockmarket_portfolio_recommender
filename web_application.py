@@ -193,8 +193,8 @@ def finance_analysis():
             temp = Stock(real_name, condition, price)
             nameAndValue.append(temp)
         stockname = request.form['stockname']
-        nameValue, amount = RRgetQuantity(nameAndValue, total_money)
         total_money = request.form['amount']
+        nameValue, amount = RRgetQuantity(nameAndValue, total_money)
         price, change, perchange = fetchPreMarket(stockname)
         if change == "error":
             return render_template('invalid.html')

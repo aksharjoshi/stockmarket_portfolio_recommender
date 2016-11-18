@@ -6,32 +6,32 @@ import psycopg2
 import urlparse
 import urllib2 
 import json
-from flask.ext.sqlalchemy import SQLAlchemy
+#from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 from yahoo_finance import Share
 import requests
 from time import gmtime, strftime
-from flask.ext.heroku import Heroku
+#from flask.ext.heroku import Heroku
 from flask_bootstrap import Bootstrap
 app = Flask(__name__)
 Bootstrap(app)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////tmp/web_application.db')
-heroku = Heroku(app)
-db = SQLAlchemy(app)
+#heroku = Heroku(app)
+#db = SQLAlchemy(app)
 
-class WebUser(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	name = db.Column(db.String(80))
-	time = db.Column(db.DateTime)
-	password = db.Column(db.String(80))
-	email = db.Column(db.String(80))
-	def __init__(self, name, time, password, email):
-		self.name = name
-		self.time = time
-		self.password = password
-		self.email = email
+#class WebUser(db.Model):
+#	id = db.Column(db.Integer, primary_key=True)
+#	name = db.Column(db.String(80))
+#	time = db.Column(db.DateTime)
+#	password = db.Column(db.String(80))
+#	email = db.Column(db.String(80))
+#	def __init__(self, name, time, password, email):
+#		self.name = name
+#		self.time = time
+#		self.password = password
+#		self.email = email
 
 
 # controllers

@@ -34,21 +34,39 @@
  <div>{{ t }}</div>
 {% endfor %}
 
-<div id="demo"></div>
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
 <script type="text/javascript">
 
-$("#demo").jChart({
-name: "North American Regional Population Loss 2014",
-headers: ["Arizona","Michigan","Ontario","British Columbia","Texas"],
-values: [250000,478000,88000,429000,423000],
-footers: [100000,200000,300000,400000,500000],
-colors: ["#1000ff","#006eff","#00b6ff","#00fff6","#00ff90"]
-});
-</script>
-<br type="_moz">
+window.onload = function () {
 
-  
+//Better to construct options first and then pass it as a parameter
+  var options = {
+    title: {
+      text: "Column Chart using jQuery Plugin"
+    },
+                animationEnabled: true,
+    data: [
+    {
+      type: "column", //change it to line, area, bar, pie, etc
+      dataPoints: [
+        { x: 10, y: 10 },
+        { x: 20, y: 11 },
+        { x: 30, y: 14 },
+        { x: 40, y: 16 },
+        { x: 50, y: 19 },
+        { x: 60, y: 15 },
+        { x: 70, y: 12 },
+        { x: 80, y: 10 }
+      ]
+    }
+    ]
+  };
+
+  $("#chartContainer").CanvasJSChart(options);
+
+}
+</script>
 
 {% endblock %}
 

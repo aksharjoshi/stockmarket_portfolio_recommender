@@ -214,6 +214,7 @@ def finance_analysis():
                     continue
                 fiveDaysData[count] = fiveDaysData[count] + value * val.quantity
                 count = count + 1
+        fiveDaysData.reverse()
         price, change, perchange = fetchPreMarket(stockname)
         if change == "error":
             return render_template('invalid.html')

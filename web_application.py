@@ -8,6 +8,7 @@ import urllib2
 import json
 from flask.ext.sqlalchemy import SQLAlchemy
 from datetime import datetime
+from yahoo_finance import Share
 import requests
 from time import gmtime, strftime
 from flask.ext.heroku import Heroku
@@ -39,12 +40,13 @@ class WebUser(db.Model):
 #    return send_from_directory(os.path.join(app.root_path, 'static'), 'ico/favicon.ico')
 
 class Stock:
-    def __init__(self, name, condition, single_value):
+    def __init__(self, name, condition, single_value, symbol):
         self.name = name
         self.condition = condition
         self.quantity = 0
         self.value = 0
         self.single_value = single_value
+        self.symbol = symbol
     def buy_stock(self, quantity):
         self.quantity = quantity
 
@@ -190,11 +192,25 @@ def finance_analysis():
                     real_name=x['name']
                     break
             condition = change + ' ' + '(' + str(perchange) + ')'
-            temp = Stock(real_name, condition, float(price))
+            temp = Stock(real_name, condition, float(price), val)
             nameAndValue.append(temp)
         stockname = request.form['stockname']
         total_money = request.form['amount']
         nameValue, amount = RRgetQuantity(nameAndValue, total_money)
+        fiveDaysData = []
+        start = datetime.today() - datetime.timedelta(days=5)
+        end = datetime.today() - datetime.timedelta(days=1)
+        start = start.strftime('%Y-%m-%d')
+        end = end.strftime('%Y-%m-%d')
+        for i in range(5):
+            fiveDaysData.append(0)
+        for val in nameValue:
+            stock = Share(val.symbol)
+            data = stock.get_historical(str(start), str(end))
+            count = 0
+            for detail in data:
+                fiveDaysData[count] = fiveDaysData[count] + float(detail['Close']) * val.quantity
+                count = count + 1
         price, change, perchange = fetchPreMarket(stockname)
         if change == "error":
             return render_template('invalid.html')
@@ -207,7 +223,7 @@ def finance_analysis():
                 real_name=x['name']
                 break
         s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
-        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name, nameAndValue=nameAndValue, leftAmount=amount)
+        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name, nameAndValue=nameAndValue, leftAmount=amount, fiveDaysData=fiveDaysData)
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):

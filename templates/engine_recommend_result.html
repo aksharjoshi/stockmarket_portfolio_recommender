@@ -40,29 +40,25 @@
 <script type="text/javascript" src="{{ url_for('static', filename='jquery.canvasjs.min.js') }}"></script>
 
 <script type="text/javascript">
-
-window.onload = function () {
-  var chart = new CanvasJS.Chart("chartContainer",
+var chart = new CanvasJS.Chart("chartContainer",
   {
     animationEnabled: true,
-    theme: "theme2",
-    //exportEnabled: true,
     title:{
-      text: "Latest Five Days Data"
+      text: "Chart with Labels on X Axis"
     },
     data: [
     {
       type: "column", //change type to bar, line, area, pie, etc
       dataPoints: [
-        { x: 'Day 1', y: '{{fiveDaysData[0]}}' },
-        { x: 'Day 2', y: '{{fiveDaysData[1]}}' },
-        { x: 'Day 3', y: '{{fiveDaysData[2]}}' },
-        { x: 'Day 4', y: '{{fiveDaysData[3]}}' },
-        { x: 'Day 5', y: '{{fiveDaysData[4]}}' }
+        { label: "Day 1", y: '{{fiveDaysData[0]}}' },
+        { label: "Day 2", y: '{{fiveDaysData[1]}}'},
+        { label: "Day 3",  y: '{{fiveDaysData[2]}}'},                                    
+        { label: "Day 4",  y: '{{fiveDaysData[3]}}' },
+        { label: "Day 5",  y: '{{fiveDaysData[4]}}' }
       ]
     }
     ]
-  });
+    });
 
   chart.render();
 }

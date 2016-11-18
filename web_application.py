@@ -198,7 +198,7 @@ def finance_analysis():
         total_money = request.form['amount']
         nameValue, amount = RRgetQuantity(nameAndValue, total_money)
         fiveDaysData = []
-        start = datetime.today() - timedelta(days=5)
+        start = datetime.today() - timedelta(days=7)
         end = datetime.today() - timedelta(days=1)
         start = start.strftime('%Y-%m-%d')
         end = end.strftime('%Y-%m-%d')
@@ -209,7 +209,10 @@ def finance_analysis():
             data = stock.get_historical(str(start), str(end))
             count = 0
             for detail in data:
-                fiveDaysData[count] = fiveDaysData[count] + float(detail['Close']) * val.quantity
+                value= float(detail['Close'])
+                if value == 0：
+                    continue
+                fiveDaysData[count] = fiveDaysData[count] + value * val.quantity
                 count = count + 1
         price, change, perchange = fetchPreMarket(stockname)
         if change == "error":

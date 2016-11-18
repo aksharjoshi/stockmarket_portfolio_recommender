@@ -215,19 +215,7 @@ def finance_analysis():
                 fiveDaysData[count] = fiveDaysData[count] + value * val.quantity
                 count = count + 1
         fiveDaysData.reverse()
-        price, change, perchange = fetchPreMarket(stockname)
-        if change == "error":
-            return render_template('invalid.html')
-        url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(stockname)
-        result = requests.get(url).json()
-        check_time = strftime("%a %d %b %Y %H:%M:%S %Z", gmtime())
-        real_name = 'unknown'
-        for x in result['ResultSet']['Result']:
-            if x['symbol'] == stockname:
-                real_name=x['name']
-                break
-        s = str(price) + ' ' + change + ' ' + '(' + str(perchange) + ')'
-        return render_template('engine_recommend_result.html', checktime=check_time, result=s, stock_name=real_name, nameAndValue=nameAndValue, leftAmount=amount, fiveDaysData=fiveDaysData)
+        return render_template('engine_recommend_result.html', nameAndValue=nameAndValue, leftAmount=amount, fiveDaysData=fiveDaysData)
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):

@@ -210,7 +210,7 @@ def finance_analysis():
             count = 0
             for detail in data:
                 value= float(detail['Close'])
-                if value == 0：
+                if value == 0:
                     continue
                 fiveDaysData[count] = fiveDaysData[count] + value * val.quantity
                 count = count + 1

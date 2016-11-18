@@ -194,7 +194,6 @@ def finance_analysis():
             condition = change + ' ' + '(' + str(perchange) + ')'
             temp = Stock(real_name, condition, float(price), val)
             nameAndValue.append(temp)
-        stockname = request.form['stockname']
         total_money = request.form['amount']
         nameValue, amount = RRgetQuantity(nameAndValue, total_money)
         fiveDaysData = []

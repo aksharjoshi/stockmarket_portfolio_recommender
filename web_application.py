@@ -214,7 +214,9 @@ def finance_analysis():
                 fiveDaysData[count] = fiveDaysData[count] + value * val.quantity
                 count = count + 1
         fiveDaysData.reverse()
-        return render_template('engine_recommend_result.html', nameAndValue=nameAndValue, leftAmount=amount, fiveDaysData=fiveDaysData)
+        maxValue = max(fiveDaysData) + 100
+        minValue = min(fiveDaysData) - 100
+        return render_template('engine_recommend_result.html', nameAndValue=nameAndValue, leftAmount=amount, fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):

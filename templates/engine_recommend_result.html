@@ -46,6 +46,10 @@ var chart = new CanvasJS.Chart("chartContainer",
     title:{
       text: "Five Days Data"
     },
+    axisY:{
+         minimum: {{minValue}}
+         maximum: {{maxValue}}
+     },
     data: [
     {
       type: "column", //change type to bar, line, area, pie, etc

@@ -216,7 +216,7 @@ def finance_analysis():
         fiveDaysData.reverse()
         maxValue = max(fiveDaysData) + 100
         minValue = min(fiveDaysData) - 100
-        return render_template('engine_recommend_result.html', nameAndValue=nameAndValue, leftAmount=leftAmount, Spent=request.form['amount'] - leftAmount, fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, Amount=request.form['amount'])
+        return render_template('engine_recommend_result.html', nameAndValue=nameAndValue, leftAmount=leftAmount, Spent=float(request.form['amount']) - float(leftAmount), fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, Amount=request.form['amount'])
     return render_template('finance_analysis.html')
 
 def fetchPreMarket(symbol):

@@ -123,33 +123,6 @@ span.psw {
 
 <h1><a href="{{ url_for('finance_analysis') }}">Finance Analysis Engine</a></h1>
 
-<h2>Stock Calculator Form</h2>
-  
-  <form action="" method="post">
-      <label><b>Symbol</b></label>
-      <input type="text" placeholder="Enter Symbol" name="symbol" required>
-
-      <label><b>Allotment</b></label>
-      <input type="text" placeholder="Enter Allotment" name="allotment" required>
-
-      <label><b>Final Share Price</b></label>
-      <input type="text" placeholder="Enter Final Share Price" name="finalSharePrice" required>
-
-      <label><b>Sell Commission</b></label>
-      <input type="text" placeholder="Enter Sell Commission" name="sellCommission" required>
-
-       <label><b>Initial Share Price</b></label>
-      <input type="text" placeholder="Enter Initial Share Price" name="initialSharePrice" required>
-
-      <label><b>Buy Commission</b></label>
-      <input type="text" placeholder="Enter Buy Commission" name="buyCommission" required>
-
-      <label><b>Tax Rate Percentage</b></label>
-      <input type="text" placeholder="Enter Tax Rate Percentage in %" name="taxRate" required>
-        
-      <button type="submit">Generate Report</button>
-  </form>
-
 </body>
 </html>
 {% endblock %}

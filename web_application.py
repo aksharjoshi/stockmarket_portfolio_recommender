@@ -2,7 +2,7 @@ from flask import Flask, render_template, send_from_directory, session, request
 import os
 import sys
 import logging
-import psycopg2
+#import psycopg2
 import urlparse
 import urllib2 
 import json

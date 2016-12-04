@@ -271,4 +271,13 @@ if __name__ == '__main__':
       'raise_on_warnings': True,
     }
     cnx = mysql.connector.connect(**config)
+    cursor = cnx.cursor()
+    query = "SHOW DATABASE"
+    cursor.execute(query)
+    for(databases) in cursor
+        print databases
+
+    cursor.close()
+    cnx.close()
+    
     app.run(host='0.0.0.0',debug = True)

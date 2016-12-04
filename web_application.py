@@ -270,7 +270,7 @@ if __name__ == '__main__':
       'database': 'stock_portfolio',
       'raise_on_warnings': True,
     }
-    cnx = mysql.connector.connect(**config)
+    cnx = mysql.connector.connect(user='root', password='SmartPermit' , database='stock_portfolio')
     cursor = cnx.cursor()
     query = "SHOW DATABASE"
     cursor.execute(query)
@@ -279,5 +279,5 @@ if __name__ == '__main__':
 
     cursor.close()
     cnx.close()
-    
+
     app.run(host='0.0.0.0',debug = True)

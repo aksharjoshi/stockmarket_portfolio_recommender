@@ -131,6 +131,7 @@ def login():
 
 @app.route("/finance_analysis", methods=['GET', 'POST'])
 def finance_analysis():
+    print request.headers
     ethical_stock_name = ['AAPL', 'ADBE', 'NSRGY']
     growth_stock_name = ['IUSG', 'VONG', 'SCHG']
     index_stock_name = ['VTI', 'IXUS', 'ILTB']
@@ -261,4 +262,4 @@ def RRgetQuantity(array, amount):
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(host='0.0.0.0',debug = True)

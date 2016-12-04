@@ -263,7 +263,7 @@ def RRgetQuantity(array, amount):
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 if __name__ == '__main__':
-     config = {
+    config = {
       'user': 'root',
       'password': 'SmartPermit',
       'host': '127.0.0.1',

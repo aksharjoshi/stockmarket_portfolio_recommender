@@ -274,7 +274,7 @@ if __name__ == '__main__':
     cursor = cnx.cursor()
     query = "SHOW DATABASE"
     cursor.execute(query)
-    for databases in cursor
+    for(databases) in cursor:
         print databases
 
     cursor.close()

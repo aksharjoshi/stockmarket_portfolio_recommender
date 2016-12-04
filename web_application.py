@@ -2,6 +2,7 @@ from flask import Flask, render_template, send_from_directory, session, request
 import os
 import sys
 import logging
+import mysql.connector
 #import psycopg2
 import urlparse
 import urllib2 
@@ -262,4 +263,12 @@ def RRgetQuantity(array, amount):
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 if __name__ == '__main__':
+     config = {
+      'user': 'root',
+      'password': 'SmartPermit',
+      'host': '127.0.0.1',
+      'database': 'stock_portfolio',
+      'raise_on_warnings': True,
+    }
+    cnx = mysql.connector.connect(**config)
     app.run(host='0.0.0.0',debug = True)

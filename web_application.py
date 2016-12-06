@@ -264,21 +264,11 @@ def RRgetQuantity(array, amount):
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 if __name__ == '__main__':
-    config = {
-      'user': 'root',
-      'password': 'SmartPermit',
-      'host': '127.0.0.1',
-      'database': 'stock_portfolio',
-      'raise_on_warnings': True,
-    }
-    cnx = mysql.connector.connect(user='root', password='SmartPermit' , database='stock_portfolio')
+    cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
     cursor = cnx.cursor()
-    query = "SHOW DATABASE"
+    query = "show databases;"
     cursor.execute(query)
-    for(databases) in cursor:
+    for databases in cursor:
         print databases
-
-    cursor.close()
-    cnx.close()
 
     app.run(host='0.0.0.0',debug = True)

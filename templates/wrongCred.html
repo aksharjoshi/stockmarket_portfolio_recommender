@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %} - Page Not Found{% endblock %}
+{% block content %}
+  <h2>Kindly enter correct username and password. The username: {{ username}} does not exist in our system. </h1><br/>
+  <h2> If you are new to system, please sign up first. </h2>
+  <br/><H1><a href="{{ url_for('index') }}">Home</a></H1>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %} - Engine Recommend Result{% endblock %}
+
+{% block content %}
+<h1>Engine Recommend Result</h1>
+
+<h2>Investment Amount</h2>
+<div>
+{{Amount}}
+</div>
+
+<hr>
+
+<h2>Total Spent </h2>
+
+ <div>{{Spent}}</div>
+
+ <hr> 
+
+ <h2>Left Amount </h2>
+
+ <hr>
+
+ <div>{{leftAmount}}</div>
+
+<h2>Investment Detail</h2>
+<div>
+<table class="table table-striped">
+<thead>
+    <tr>
+      <th>Company Name</th>
+      <th>Price</th>
+      <th>Condition</th>
+      <th>Quantiy</th>
+      <th>Total Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for t in nameAndValue %}
+    <tr>
+        <td>{{ t.name }}</td>
+        <td>{{ t.single_value }}</td>
+        <td>{{ t.condition }}</td>
+        <td>{{ t.quantity }}</td>
+        <td>{{ t.value }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+ </table>
+ </div>
+
+
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-3.1.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.canvasjs.min.js') }}"></script>
+
+<script type="text/javascript">
+var chart = new CanvasJS.Chart("chartContainer",
+  {
+    animationEnabled: true,
+    title:{
+      text: "Five Days Profito"
+    },
+    axisY:{
+         minimum: {{minValue}},
+         maximum: {{maxValue}}
+     },
+    data: [
+    {
+      type: "column", //change type to bar, line, area, pie, etc
+      dataPoints: [
+        { label: "Day 1",  y: {{fiveDaysData[0]}} },
+        { label: "Day 2",  y: {{fiveDaysData[1]}} },
+        { label: "Day 3",  y: {{fiveDaysData[2]}} },              
+        { label: "Day 4",  y: {{fiveDaysData[3]}} },
+        { label: "Day 5",  y: {{fiveDaysData[4]}} }
+      ]
+    }
+    ]
+    });
+
+  chart.render();
+</script>
+
+{% endblock %}

@@ -174,6 +174,16 @@ def login():
             return render_template('index.html')
     return render_template('login.html')
 
+@app.route("/firstPage")
+def firstPage():
+    query = "SELECT company_name, share_quantity from USER_HISTORY WHERE userid='"+session['username']+"';"
+    cursor.execute(query)
+    cnx.commit()
+    for name, quantity in cursor:
+        print name
+        print quantity
+    return "Hello"
+
 @app.route("/finance_analysis", methods=['GET', 'POST'])
 def finance_analysis():
     if session['logged_in'] == True:
@@ -183,6 +193,16 @@ def finance_analysis():
         index_stock_name = ['VTI', 'IXUS', 'ILTB']
         quality_stock_name = ['FB', 'MSFT', 'GOOG']
         value_stock_name = ['AMZN', 'ETN', 'CMI']
+        # if request.method == 'GET':
+        #     query = "SELECT company_name, share_quantity from USER_HISTORY WHERE userid='"+[session'username']+"';"
+        #     cursor.execute(query)
+        #     cnx.commit()
+        #     for name, quantity in cursor:
+        #         print name
+        #         print quantity
+
+
+
         if request.method == 'POST':
             ethical, growth, index, quality, value = False, False, False, False, False
             total_stock_list = []

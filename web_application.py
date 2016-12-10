@@ -269,8 +269,15 @@ def finance_analysis():
             print "name value is : "
             for name in nameAndValue:
                 print name.printVal()
-
+            cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
+            cursor = cnx.cursor()
             nameValue, leftAmount = RRgetQuantity(nameAndValue, total_money)
+            for x in nameValue:
+            	check_quantity = str(x.quantity)
+            	check_symbol = str(x.symbol)
+            	query = "INSERT INTO USER_HISTORY(userid,company_name,share_quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', "+check_quantity+",now());"
+            	print query
+            	cursor.execute(query)
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)

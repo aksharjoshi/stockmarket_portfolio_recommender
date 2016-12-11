@@ -160,7 +160,7 @@ def sign_up():
             except Exception as e:
                 raise e
             
-            return render_template('index.html',fiveDaysData=[], maxValue=0, minValue=0)
+            return render_template('index.html',fiveDaysData=[], maxValue=maxValue, minValue=minValue)
     return render_template('sign_up.html')
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -319,14 +319,17 @@ def finance_analysis():
             	check_symbol = str(x.symbol)
             	query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
             	cursor.execute(query)
-            	for quantity in cursor:
-            		if quantity is not None:
+            	if cursor.rowcount == 0:
+            		print 'hello'
+            		query = "INSERT INTO USER_PORTFOLIO(username,company_name,quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', '"+check_quantity+"','');"
+            		print query
+            		cursor.execute(query)
+            		cnx.commit()
+            	else:
+            		for quantity in cursor:
             			query = "UPDATE USER_PORTFOLIO SET quantity = quantity + '"+check_quantity+"' WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';";
-            		else:
-            			query = "INSERT INTO USER_PORTFOLIO(username,company_name,quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', '"+check_quantity+"','');"
-            	print query
-            	cursor.execute(query)
-            	cnx.commit()
+            			cursor.execute(query)
+            			cnx.commit()
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)
@@ -382,19 +385,19 @@ def RRgetQuantity(array, amount):
     while amount > 0 and count < length:
         print "inside while"
         if array[index].single_value <= amount:
-            print "inside if of while"
+            #print "inside if of while"
             count = 0
             amount -= array[index].single_value
             array[index].buy_stock(array[index].quantity + 1)
         else:
-            print "inside else of while"
+            #print "inside else of while"
             count = count + 1
         if index == length - 1:
             index = 0
         else:
             index = index + 1
     for val in array:
-        print "inside for of rr"
+        #print "inside for of rr"
         val.value = val.single_value * val.quantity
     print "amount is : " + str(amount)
     print "array in rr is: " 

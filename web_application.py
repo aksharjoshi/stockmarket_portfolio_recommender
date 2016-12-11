@@ -24,16 +24,16 @@ app.logger.setLevel(logging.ERROR)
 #db = SQLAlchemy(app)
 
 #class WebUser(db.Model):
-#	id = db.Column(db.Integer, primary_key=True)
-#	name = db.Column(db.String(80))
-#	time = db.Column(db.DateTime)
-#	password = db.Column(db.String(80))
-#	email = db.Column(db.String(80))
-#	def __init__(self, name, time, password, email):
-#		self.name = name
-#		self.time = time
-#		self.password = password
-#		self.email = email
+#   id = db.Column(db.Integer, primary_key=True)
+#   name = db.Column(db.String(80))
+#   time = db.Column(db.DateTime)
+#   password = db.Column(db.String(80))
+#   email = db.Column(db.String(80))
+#   def __init__(self, name, time, password, email):
+#       self.name = name
+#       self.time = time
+#       self.password = password
+#       self.email = email
 
 
 # controllers
@@ -74,52 +74,50 @@ def page_not_found(e):
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-	if request.method == 'POST':
-		return 'Hello'
-	xxx = []
-	cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
-	cursor = cnx.cursor()
-	query = "SELECT * FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
-	cursor.execute(query)
-	if cursor.rowcount == 0:
-		for username,password,company,quantity in cursor:
-			print username
-			print company
-			print quantity
-			stock = Stock('','','',company)
-			stock.buy_stock(quantity)
-			xxx.append(stock)
-	fiveDaysData = []
-	start = datetime.today() - timedelta(days=7)
-	end = datetime.today() - timedelta(days=1)
-	start = start.strftime('%Y-%m-%d')
-	end = end.strftime('%Y-%m-%d')
-	for i in range(5):
-		fiveDaysData.append(0)
-	for val in xxx:
-		stock = Share(val.symbol)
-		data = stock.get_historical(str(start),str(end))
-		count = 0
-		for detail in data:
-			value = float(detail['Close'])
-			if value == 0:
-				continue
-			fiveDaysData[count] = fiveDaysData[count] + value * val.quantity
-		count = count + 1
-	fiveDaysData.reverse()
-	maxValue = max(fiveDaysData) + 100
-	minValue = min(fiveDaysData) - 100
-	return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+    if request.method == 'POST':
+        return 'Hello'
+    xxx = []
+    cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
+    cursor = cnx.cursor()
+    query = "SELECT company_name, quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
+    cursor.execute(query)
+    if cursor.rowcount is not 0:
+        for company,quantity in cursor:
+            stock = Stock('','','',company)
+            stock.buy_stock(quantity)
+            xxx.append(stock)
+    fiveDaysData = []
+    start = datetime.today() - timedelta(days=7)
+    end = datetime.today() - timedelta(days=1)
+    start = start.strftime('%Y-%m-%d')
+    end = end.strftime('%Y-%m-%d')
+    for i in range(5):
+        fiveDaysData.append(0)
+    for val in xxx:
+        stock = Share(val.symbol)
+        data = stock.get_historical(str(start),str(end))
+        count = 0
+        for detail in data:
+            value = float(detail['Close'])
+            #if value == 0:
+             #   continue
+            fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
+            count = count + 1
+        print val.symbol
+    fiveDaysData.reverse()
+    maxValue = max(fiveDaysData) + 100
+    minValue = min(fiveDaysData) - 100
+    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
 
 @app.route("/logout")
 def logout():
-	session['logged_in'] = False;
-	fiveDaysData = []
-	for i in range(5):
-		fiveDaysData.append(0)
-	maxValue = 0
-	minValue = 0
-	return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+    session['logged_in'] = False;
+    fiveDaysData = []
+    for i in range(5):
+        fiveDaysData.append(0)
+    maxValue = 0
+    minValue = 0
+    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
 
 
 @app.route("/sign_up", methods=['GET','POST'])
@@ -170,7 +168,7 @@ def login():
         pwd = request.form['psw']
       #   test = WebUser.query.filter_by(name=username).filter_by(password=pwd).first()
       #   if test is None:
-    		# return render_template('noMatch.html')
+            # return render_template('noMatch.html')
         query = "SELECT * FROM USER WHERE username='"+username+"' AND password='"+pwd+"';"
         cursor.execute(query)
 
@@ -201,15 +199,15 @@ def login():
             for i in range(5):
                 fiveDaysData.append(0)
             for val in xxx:
-            	stock = Share(val.symbol)
-            	data = stock.get_historical(str(start),str(end))
-            	count = 0
-            	for detail in data:
-                	value = float(detail['Close'])
-                	if value == 0:
-                		continue
-                	fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
-                	count = count + 1
+                stock = Share(val.symbol)
+                data = stock.get_historical(str(start),str(end))
+                count = 0
+                for detail in data:
+                    value = float(detail['Close'])
+                    if value == 0:
+                        continue
+                    fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
+                    count = count + 1
             fiveDaysData.reverse()
             maxValue = max(fiveDaysData) + 100
             minValue = min(fiveDaysData) - 100
@@ -315,21 +313,21 @@ def finance_analysis():
             cursor = cnx.cursor()
             nameValue, leftAmount = RRgetQuantity(nameAndValue, total_money)
             for x in nameValue:
-            	check_quantity = str(x.quantity)
-            	check_symbol = str(x.symbol)
-            	query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
-            	cursor.execute(query)
-            	if cursor.rowcount == 0:
-            		print 'hello'
-            		query = "INSERT INTO USER_PORTFOLIO(username,company_name,quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', '"+check_quantity+"','');"
-            		print query
-            		cursor.execute(query)
-            		cnx.commit()
-            	else:
-            		for quantity in cursor:
-            			query = "UPDATE USER_PORTFOLIO SET quantity = quantity + '"+check_quantity+"' WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';";
-            			cursor.execute(query)
-            			cnx.commit()
+                check_quantity = str(x.quantity)
+                check_symbol = str(x.symbol)
+                query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
+                cursor.execute(query)
+                if cursor.rowcount == 0:
+                    print 'hello'
+                    query = "INSERT INTO USER_PORTFOLIO(username,company_name,quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', '"+check_quantity+"','');"
+                    print query
+                    cursor.execute(query)
+                    cnx.commit()
+                else:
+                    for quantity in cursor:
+                        query = "UPDATE USER_PORTFOLIO SET quantity = quantity + '"+check_quantity+"' WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';";
+                        cursor.execute(query)
+                        cnx.commit()
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)

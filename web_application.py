@@ -160,7 +160,7 @@ def sign_up():
             except Exception as e:
                 raise e
             
-            return render_template('index.html')
+            return render_template('index.html',fiveDaysData=[], maxValue=0, minValue=0)
     return render_template('sign_up.html')
 
 @app.route("/login", methods=['GET', 'POST'])

@@ -124,6 +124,32 @@ span.psw {
 <h1><a href="{{ url_for('finance_analysis') }}">Finance Analysis Engine</a></h1>
 <!-- <h1><a href="{{ url_for('firstPage') }}"> See History </a></h1> -->
 
+<h2>Investment Detail</h2>
+<div>
+<table class="table table-striped">
+<thead>
+    <tr>
+      <th>Company Name</th>
+      <th>Price</th>
+      <th>Condition</th>
+      <th>Quantiy</th>
+      <th>Total Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for t in nameAndValue %}
+    <tr>
+        <td>{{ t.name }}</td>
+        <td>{{ t.single_value }}</td>
+        <td>{{ t.condition }}</td>
+        <td>{{ t.quantity }}</td>
+        <td>{{ t.value }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+ </table>
+ </div>
+
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
 <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.1.1.min.js') }}"></script>

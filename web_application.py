@@ -24,16 +24,16 @@ app.logger.setLevel(logging.ERROR)
 #db = SQLAlchemy(app)
 
 #class WebUser(db.Model):
-#	id = db.Column(db.Integer, primary_key=True)
-#	name = db.Column(db.String(80))
-#	time = db.Column(db.DateTime)
-#	password = db.Column(db.String(80))
-#	email = db.Column(db.String(80))
-#	def __init__(self, name, time, password, email):
-#		self.name = name
-#		self.time = time
-#		self.password = password
-#		self.email = email
+#   id = db.Column(db.Integer, primary_key=True)
+#   name = db.Column(db.String(80))
+#   time = db.Column(db.DateTime)
+#   password = db.Column(db.String(80))
+#   email = db.Column(db.String(80))
+#   def __init__(self, name, time, password, email):
+#       self.name = name
+#       self.time = time
+#       self.password = password
+#       self.email = email
 
 
 # controllers
@@ -74,6 +74,7 @@ def page_not_found(e):
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+<<<<<<< HEAD
 	xxx = []
 	cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
 	cursor = cnx.cursor()
@@ -109,16 +110,54 @@ def index():
 	maxValue = max(fiveDaysData) + 100
 	minValue = min(fiveDaysData) - 100
 	return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+=======
+    if request.method == 'POST':
+        return 'Hello'
+    nameAndValue = []
+    cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
+    cursor = cnx.cursor()
+    query = "SELECT company_name, quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
+    cursor.execute(query)
+    if cursor.rowcount is not 0:
+        for company,quantity in cursor:
+            stock = fetchTotalInfo(company)
+            stock.buy_stock(quantity)
+            stock.set_value(float(stock.quantity) * float(stock.single_value))
+            nameAndValue.append(stock)
+    fiveDaysData = []
+    start = datetime.today() - timedelta(days=7)
+    end = datetime.today() - timedelta(days=1)
+    start = start.strftime('%Y-%m-%d')
+    end = end.strftime('%Y-%m-%d')
+    for i in range(5):
+        fiveDaysData.append(0)
+    for val in nameAndValue:
+        stock = Share(val.symbol)
+        data = stock.get_historical(str(start),str(end))
+        count = 0
+        for detail in data:
+            value = float(detail['Close'])
+            #if value == 0:
+             #   continue
+            fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
+            count = count + 1
+        print val.symbol
+    fiveDaysData.reverse()
+    maxValue = max(fiveDaysData) + 100
+    minValue = min(fiveDaysData) - 100
+    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, nameAndValue=nameAndValue)
+>>>>>>> 345af47b9a2f674f34ba4e91348635b9e4d07298
 
 @app.route("/logout")
 def logout():
-	session['logged_in'] = False;
-	fiveDaysData = []
-	for i in range(5):
-		fiveDaysData.append(0)
-	maxValue = 0
-	minValue = 0
-	return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+    session['logged_in'] = False;
+    fiveDaysData = []
+    for i in range(5):
+        fiveDaysData.append(0)
+    maxValue = 0
+    minValue = 0
+    nameAndValue=[]
+    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, nameAndValue=nameAndValue)
 
 
 @app.route("/sign_up", methods=['GET','POST'])
@@ -159,7 +198,7 @@ def sign_up():
             except Exception as e:
                 raise e
             
-            return render_template('index.html')
+            return render_template('index.html',fiveDaysData=[], maxValue=0, minValue=0,nameAndValue=[])
     return render_template('sign_up.html')
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -169,7 +208,7 @@ def login():
         pwd = request.form['psw']
       #   test = WebUser.query.filter_by(name=username).filter_by(password=pwd).first()
       #   if test is None:
-    		# return render_template('noMatch.html')
+            # return render_template('noMatch.html')
         query = "SELECT * FROM USER WHERE username='"+username+"' AND password='"+pwd+"';"
         cursor.execute(query)
 
@@ -179,19 +218,17 @@ def login():
         else:
             session['logged_in'] = True;
             session['username'] = username;
-            xxx = []
+            nameAndValue = []
             cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
             cursorone = cnx.cursor()
             query = "SELECT username,password,company_name,quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
             cursorone.execute(query)
             if cursorone.rowcount is not 0:
                 for username,password,company,quantity in cursorone:
-                    print username
-                    print company
-                    print quantity
-                    stock = Stock('','','',company)
+                    stock = fetchTotalInfo(company)
                     stock.buy_stock(quantity)
-                    xxx.append(stock)
+                    stock.set_value(float(stock.quantity) * float(stock.single_value))
+                    nameAndValue.append(stock)
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)
@@ -199,20 +236,20 @@ def login():
             end = end.strftime('%Y-%m-%d')
             for i in range(5):
                 fiveDaysData.append(0)
-            for val in xxx:
-            	stock = Share(val.symbol)
-            	data = stock.get_historical(str(start),str(end))
-            	count = 0
-            	for detail in data:
-                	value = float(detail['Close'])
-                	if value == 0:
-                		continue
-                	fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
-                	count = count + 1
+            for val in nameAndValue:
+                stock = Share(val.symbol)
+                data = stock.get_historical(str(start),str(end))
+                count = 0
+                for detail in data:
+                    value = float(detail['Close'])
+                    if value == 0:
+                        continue
+                    fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
+                    count = count + 1
             fiveDaysData.reverse()
             maxValue = max(fiveDaysData) + 100
             minValue = min(fiveDaysData) - 100
-            return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+            return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue,nameAndValue=nameAndValue)
     return render_template('login.html')
 
 @app.route("/firstPage")
@@ -314,6 +351,7 @@ def finance_analysis():
             cursor = cnx.cursor()
             nameValue, leftAmount = RRgetQuantity(nameAndValue, total_money)
             for x in nameValue:
+<<<<<<< HEAD
             	check_quantity = str(x.quantity)
             	check_symbol = str(x.symbol)
             	query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
@@ -333,6 +371,23 @@ def finance_analysis():
                     cnx.commit()
                 #print "Query in insert is: " + query
             
+=======
+                check_quantity = str(x.quantity)
+                check_symbol = str(x.symbol)
+                query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
+                cursor.execute(query)
+                if cursor.rowcount == 0:
+                    print 'hello'
+                    query = "INSERT INTO USER_PORTFOLIO(username,company_name,quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', '"+check_quantity+"','');"
+                    print query
+                    cursor.execute(query)
+                    cnx.commit()
+                else:
+                    for quantity in cursor:
+                        query = "UPDATE USER_PORTFOLIO SET quantity = quantity + '"+check_quantity+"' WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';";
+                        cursor.execute(query)
+                        cnx.commit()
+>>>>>>> 345af47b9a2f674f34ba4e91348635b9e4d07298
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)
@@ -377,6 +432,21 @@ def fetchPreMarket(symbol):
     except (urllib2.HTTPError, urllib2.URLError), err:
         return (err, "error", "")
 
+def fetchTotalInfo(symbol):
+    price, change, perchange = fetchPreMarket(symbol)
+    if change == "error":
+        return None
+    url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+    result = requests.get(url).json()
+    real_name = 'unknown'
+    for x in result['ResultSet']['Result']:
+        if x['symbol'] == symbol:
+            real_name=x['name']
+            break
+    condition = change + ' ' + '(' + str(perchange) + ')'
+    temp = Stock(real_name, condition, float(price), symbol)
+    return temp
+
 def RRgetQuantity(array, amount):
     print "In rrgetquantity"
     length = len(array)
@@ -393,14 +463,18 @@ def RRgetQuantity(array, amount):
             amount -= array[index].single_value
             array[index].buy_stock(array[index].quantity + 1)
         else:
-            print "inside else of while"
+            #print "inside else of while"
             count = count + 1
         if index == length - 1:
             index = 0
         else:
             index = index + 1
     for val in array:
+<<<<<<< HEAD
        # print "inside for of rr"
+=======
+        #print "inside for of rr"
+>>>>>>> 345af47b9a2f674f34ba4e91348635b9e4d07298
         val.value = val.single_value * val.quantity
     print "amount is : " + str(amount)
     print "array in rr is: " 

@@ -74,7 +74,6 @@ def page_not_found(e):
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-<<<<<<< HEAD
 	xxx = []
 	cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
 	cursor = cnx.cursor()
@@ -110,47 +109,46 @@ def index():
 	maxValue = max(fiveDaysData) + 100
 	minValue = min(fiveDaysData) - 100
 	return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
-=======
-    if request.method == 'POST':
-        return 'Hello'
-    nameAndValue = []
-    cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
-    cursor = cnx.cursor()
-    query = "SELECT company_name, quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
-    cursor.execute(query)
-    if cursor.rowcount is not 0:
-        for company,quantity in cursor:
-            stock = fetchTotalInfo(company)
-            stock.buy_stock(quantity)
-            stock.set_value(float(stock.quantity) * float(stock.single_value))
-            nameAndValue.append(stock)
-    fiveDaysData = []
-    start = datetime.today() - timedelta(days=7)
-    end = datetime.today() - timedelta(days=1)
-    start = start.strftime('%Y-%m-%d')
-    end = end.strftime('%Y-%m-%d')
-    for i in range(5):
-        fiveDaysData.append(0)
-    for val in nameAndValue:
-        stock = Share(val.symbol)
-        data = stock.get_historical(str(start),str(end))
-        count = 0
-        for detail in data:
-            value = float(detail['Close'])
-            #if value == 0:
-             #   continue
-            fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
-            count = count + 1
-        print val.symbol
-    fiveDaysData.reverse()
-    maxValue = max(fiveDaysData) + 100
-    minValue = min(fiveDaysData) - 100
-    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, nameAndValue=nameAndValue)
->>>>>>> 345af47b9a2f674f34ba4e91348635b9e4d07298
+    # if request.method == 'POST':
+    #     return 'Hello'
+    # nameAndValue = []
+    # cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
+    # cursor = cnx.cursor()
+    # query = "SELECT company_name, quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
+    # cursor.execute(query)
+    # if cursor.rowcount is not 0:
+    #     for company,quantity in cursor:
+    #         stock = fetchTotalInfo(company)
+    #         stock.buy_stock(quantity)
+    #         stock.set_value(float(stock.quantity) * float(stock.single_value))
+    #         nameAndValue.append(stock)
+    # fiveDaysData = []
+    # start = datetime.today() - timedelta(days=7)
+    # end = datetime.today() - timedelta(days=1)
+    # start = start.strftime('%Y-%m-%d')
+    # end = end.strftime('%Y-%m-%d')
+    # for i in range(5):
+    #     fiveDaysData.append(0)
+    # for val in nameAndValue:
+    #     stock = Share(val.symbol)
+    #     data = stock.get_historical(str(start),str(end))
+    #     count = 0
+    #     for detail in data:
+    #         value = float(detail['Close'])
+    #         #if value == 0:
+    #          #   continue
+    #         fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
+    #         count = count + 1
+    #     print val.symbol
+    # fiveDaysData.reverse()
+    # maxValue = max(fiveDaysData) + 100
+    # minValue = min(fiveDaysData) - 100
+    # return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, nameAndValue=nameAndValue)
 
 @app.route("/logout")
 def logout():
     session['logged_in'] = False;
+    session['username'] = ""
     fiveDaysData = []
     for i in range(5):
         fiveDaysData.append(0)
@@ -279,8 +277,6 @@ def finance_analysis():
         #         print name
         #         print quantity
 
-
-
         if request.method == 'POST':
             ethical, growth, index, quality, value = False, False, False, False, False
             total_stock_list = []
@@ -351,7 +347,6 @@ def finance_analysis():
             cursor = cnx.cursor()
             nameValue, leftAmount = RRgetQuantity(nameAndValue, total_money)
             for x in nameValue:
-<<<<<<< HEAD
             	check_quantity = str(x.quantity)
             	check_symbol = str(x.symbol)
             	query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
@@ -371,7 +366,6 @@ def finance_analysis():
                     cnx.commit()
                 #print "Query in insert is: " + query
             
-=======
                 check_quantity = str(x.quantity)
                 check_symbol = str(x.symbol)
                 query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
@@ -387,7 +381,7 @@ def finance_analysis():
                         query = "UPDATE USER_PORTFOLIO SET quantity = quantity + '"+check_quantity+"' WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';";
                         cursor.execute(query)
                         cnx.commit()
->>>>>>> 345af47b9a2f674f34ba4e91348635b9e4d07298
+
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)
@@ -470,11 +464,11 @@ def RRgetQuantity(array, amount):
         else:
             index = index + 1
     for val in array:
-<<<<<<< HEAD
+
        # print "inside for of rr"
-=======
+
         #print "inside for of rr"
->>>>>>> 345af47b9a2f674f34ba4e91348635b9e4d07298
+
         val.value = val.single_value * val.quantity
     print "amount is : " + str(amount)
     print "array in rr is: " 
@@ -491,12 +485,12 @@ if __name__ == '__main__':
     print "main called"
     cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
     cursor = cnx.cursor()
-    query = "SELECT * FROM USER_PORTFOLIO;"
-    cursor.execute(query)
-    print "db queried" 
-    print cursor
+    # query = "SELECT * FROM USER_PORTFOLIO;"
+    # cursor.execute(query)
+    # print "db queried" 
+    # print cursor
 
-    for databas in cursor:
-        print databas
+    # for databas in cursor:
+    #     print databas
 
     app.run(host='0.0.0.0',debug = True)

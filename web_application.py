@@ -74,16 +74,15 @@ def page_not_found(e):
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-	if request.method == 'POST':
-		return 'Hello'
 	xxx = []
 	cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
 	cursor = cnx.cursor()
-	query = "SELECT * FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
+	query = "SELECT company_name, quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
 	cursor.execute(query)
-	if cursor.rowcount == 0:
-		for username,password,company,quantity in cursor:
-			print username
+    #print "Querty in index: "+query
+	if cursor.rowcount != 0:
+		for company,quantity in cursor:
+			#print username
 			print company
 			print quantity
 			stock = Stock('','','',company)
@@ -104,7 +103,7 @@ def index():
 			value = float(detail['Close'])
 			if value == 0:
 				continue
-			fiveDaysData[count] = fiveDaysData[count] + value * val.quantity
+			fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
 		count = count + 1
 	fiveDaysData.reverse()
 	maxValue = max(fiveDaysData) + 100
@@ -319,14 +318,21 @@ def finance_analysis():
             	check_symbol = str(x.symbol)
             	query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
             	cursor.execute(query)
-            	for quantity in cursor:
-            		if quantity is not None:
-            			query = "UPDATE USER_PORTFOLIO SET quantity = quantity + '"+check_quantity+"' WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';";
-            		else:
-            			query = "INSERT INTO USER_PORTFOLIO(username,company_name,quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', '"+check_quantity+"','');"
-            	print query
-            	cursor.execute(query)
-            	cnx.commit()
+                print "query for select in finance is : " + query
+                print "Cursor is: " 
+                print cursor.fetchone()
+                if cursor.fetchone() is not None:
+                    for quantity in cursor:
+                        query = "UPDATE USER_PORTFOLIO SET quantity = '" + check_quantity + "' WHERE username = '" + session['username'] + "' AND company_name = '" + check_symbol + "';"
+                        print "Query in update is: " + query
+                        cursor.execute(query)
+                        cnx.commit()
+                else:
+            	    query = "INSERT INTO USER_PORTFOLIO(username,company_name,quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', '"+check_quantity+"','');"
+            	    cursor.execute(query)
+                    cnx.commit()
+                #print "Query in insert is: " + query
+            
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)
@@ -380,9 +386,9 @@ def RRgetQuantity(array, amount):
     amount = float(amount)
     print "amount is " + str(amount)
     while amount > 0 and count < length:
-        print "inside while"
+       # print "inside while"
         if array[index].single_value <= amount:
-            print "inside if of while"
+            #print "inside if of while"
             count = 0
             amount -= array[index].single_value
             array[index].buy_stock(array[index].quantity + 1)
@@ -394,7 +400,7 @@ def RRgetQuantity(array, amount):
         else:
             index = index + 1
     for val in array:
-        print "inside for of rr"
+       # print "inside for of rr"
         val.value = val.single_value * val.quantity
     print "amount is : " + str(amount)
     print "array in rr is: " 

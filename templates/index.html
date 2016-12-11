@@ -124,6 +124,39 @@ span.psw {
 <h1><a href="{{ url_for('finance_analysis') }}">Finance Analysis Engine</a></h1>
 <h1><a href="{{ url_for('firstPage') }}"> See History </a></h1>
 
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='jquery-3.1.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='jquery.canvasjs.min.js') }}"></script>
+
+<script type="text/javascript">
+var chart = new CanvasJS.Chart("chartContainer",
+  {
+    animationEnabled: true,
+    title:{
+      text: "Five Days Profito"
+    },
+    axisY:{
+         minimum: {{minValue}},
+         maximum: {{maxValue}}
+     },
+    data: [
+    {
+      type: "column", //change type to bar, line, area, pie, etc
+      dataPoints: [
+        { label: "Day 1",  y: {{fiveDaysData[0]}} },
+        { label: "Day 2",  y: {{fiveDaysData[1]}} },
+        { label: "Day 3",  y: {{fiveDaysData[2]}} },              
+        { label: "Day 4",  y: {{fiveDaysData[3]}} },
+        { label: "Day 5",  y: {{fiveDaysData[4]}} }
+      ]
+    }
+    ]
+    });
+
+  chart.render();
+</script>
+
 </body>
 </html>
 {% endblock %}

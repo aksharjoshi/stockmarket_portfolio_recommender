@@ -74,43 +74,52 @@ def page_not_found(e):
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    if request.method == 'POST':
-        symbol = request.form['symbol']
-        allotment = float(request.form['allotment'])
-        finalSharePrice = float(request.form['finalSharePrice'])
-        sellCommision = float(request.form['sellCommission'])
-        initialSharePrice = float(request.form['initialSharePrice'])
-        buyCommision = float(request.form['buyCommission'])
-        taxRate = float(request.form['taxRate']) / 100
-        totalSell = allotment * finalSharePrice
-        initialPaid = allotment * initialSharePrice
-        pureProfit = totalSell - initialPaid - sellCommision - buyCommision
-        taxPaid = 0
-        session['flag'] = False;
-        if pureProfit > 0:
-            taxPaid = pureProfit * taxRate
-            session['flag'] = True;
-        totalCost = sellCommision + buyCommision + initialPaid + taxPaid
-        returnRate = (totalSell - totalCost) / totalCost
-        breakEven = (sellCommision + buyCommision) / allotment + initialSharePrice
-        netProfit = '{:.2f}'.format(totalSell - totalCost)
-        totalSell = '{:.2f}'.format(totalSell)
-        totalCost = '{:.2f}'.format(totalCost)
-        initialPaid = '{:.2f}'.format(initialPaid)
-        buyCommision = '{:.2f}'.format(buyCommision)
-        sellCommision = '{:.2f}'.format(sellCommision)
-        taxPaid = '{:.2f}'.format(taxPaid)
-        taxRate = '{:.2%}'.format(taxRate)
-        pureProfit = '{:.2f}'.format(pureProfit)
-        returnRate = '{:.2%}'.format(returnRate)
-        breakEven = '{:.2f}'.format(breakEven)
-        return render_template('calculator.html', totalSell=totalSell, totalCost=totalCost, netProfit=netProfit, initialPaid=initialPaid, buyCommision=buyCommision, sellCommision=sellCommision, taxPaid=taxPaid, pureProfit=pureProfit, returnRate=returnRate, breakEven=breakEven, allotment=allotment, initialSharePrice=initialSharePrice, taxRate=taxRate)
-    return render_template('index.html')
+	if request.method == 'POST':
+		return 'Hello'
+	xxx = []
+	cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
+	cursor = cnx.cursor()
+	query = "SELECT * FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
+	cursor.execute(query)
+	if cursor.rowcount == 0:
+		for username,password,company,quantity in cursor:
+			print username
+			print company
+			print quantity
+			stock = Stock('','','',company)
+			stock.buy_stock(quantity)
+			xxx.append(stock)
+	fiveDaysData = []
+	start = datetime.today() - timedelta(days=7)
+	end = datetime.today() - timedelta(days=1)
+	start = start.strftime('%Y-%m-%d')
+	end = end.strftime('%Y-%m-%d')
+	for i in range(5):
+		fiveDaysData.append(0)
+	for val in xxx:
+		stock = Share(val.symbol)
+		data = stock.get_historical(str(start),str(end))
+		count = 0
+		for detail in data:
+			value = float(detail['Close'])
+			if value == 0:
+				continue
+			fiveDaysData[count] = fiveDaysData[count] + value * val.quantity
+		count = count + 1
+	fiveDaysData.reverse()
+	maxValue = max(fiveDaysData) + 100
+	minValue = min(fiveDaysData) - 100
+	return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
 
 @app.route("/logout")
 def logout():
-    session['logged_in'] = False;
-    return render_template('index.html')
+	session['logged_in'] = False;
+	fiveDaysData = []
+	for i in range(5):
+		fiveDaysData.append(0)
+	maxValue = 0
+	minValue = 0
+	return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
 
 
 @app.route("/sign_up", methods=['GET','POST'])
@@ -171,7 +180,40 @@ def login():
         else:
             session['logged_in'] = True;
             session['username'] = username;
-            return render_template('index.html')
+            xxx = []
+            cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
+            cursorone = cnx.cursor()
+            query = "SELECT username,password,company_name,quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
+            cursorone.execute(query)
+            if cursorone.rowcount is not 0:
+                for username,password,company,quantity in cursorone:
+                    print username
+                    print company
+                    print quantity
+                    stock = Stock('','','',company)
+                    stock.buy_stock(quantity)
+                    xxx.append(stock)
+            fiveDaysData = []
+            start = datetime.today() - timedelta(days=7)
+            end = datetime.today() - timedelta(days=1)
+            start = start.strftime('%Y-%m-%d')
+            end = end.strftime('%Y-%m-%d')
+            for i in range(5):
+                fiveDaysData.append(0)
+            for val in xxx:
+            	stock = Share(val.symbol)
+            	data = stock.get_historical(str(start),str(end))
+            	count = 0
+            	for detail in data:
+                	value = float(detail['Close'])
+                	if value == 0:
+                		continue
+                	fiveDaysData[count] = fiveDaysData[count] + value * float(val.quantity)
+                	count = count + 1
+            fiveDaysData.reverse()
+            maxValue = max(fiveDaysData) + 100
+            minValue = min(fiveDaysData) - 100
+            return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
     return render_template('login.html')
 
 @app.route("/firstPage")
@@ -275,9 +317,16 @@ def finance_analysis():
             for x in nameValue:
             	check_quantity = str(x.quantity)
             	check_symbol = str(x.symbol)
-            	query = "INSERT INTO USER_HISTORY(userid,company_name,share_quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', "+check_quantity+",now());"
+            	query = "SELECT quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';"
+            	cursor.execute(query)
+            	for quantity in cursor:
+            		if quantity is not None:
+            			query = "UPDATE USER_PORTFOLIO SET quantity = quantity + '"+check_quantity+"' WHERE username='"+session['username']+"' AND company_name='"+check_symbol+"';";
+            		else:
+            			query = "INSERT INTO USER_PORTFOLIO(username,company_name,quantity,last_modified) VALUES('"+session['username']+"', '"+check_symbol+"', '"+check_quantity+"','');"
             	print query
             	cursor.execute(query)
+            	cnx.commit()
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)
@@ -362,7 +411,7 @@ if __name__ == '__main__':
     print "main called"
     cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
     cursor = cnx.cursor()
-    query = "SELECT * FROM USER_HISTORY;"
+    query = "SELECT * FROM USER_PORTFOLIO;"
     cursor.execute(query)
     print "db queried" 
     print cursor

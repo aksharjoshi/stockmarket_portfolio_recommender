@@ -76,16 +76,17 @@ def page_not_found(e):
 def index():
     if request.method == 'POST':
         return 'Hello'
-    xxx = []
+    nameAndValue = []
     cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
     cursor = cnx.cursor()
     query = "SELECT company_name, quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
     cursor.execute(query)
     if cursor.rowcount is not 0:
         for company,quantity in cursor:
-            stock = Stock('','','',company)
+            stock = fetchTotalInfo(company)
             stock.buy_stock(quantity)
-            xxx.append(stock)
+            stock.set_value(float(stock.quantity) * float(stock.single_value))
+            nameAndValue.append(stock)
     fiveDaysData = []
     start = datetime.today() - timedelta(days=7)
     end = datetime.today() - timedelta(days=1)
@@ -93,7 +94,7 @@ def index():
     end = end.strftime('%Y-%m-%d')
     for i in range(5):
         fiveDaysData.append(0)
-    for val in xxx:
+    for val in nameAndValue:
         stock = Share(val.symbol)
         data = stock.get_historical(str(start),str(end))
         count = 0
@@ -107,7 +108,7 @@ def index():
     fiveDaysData.reverse()
     maxValue = max(fiveDaysData) + 100
     minValue = min(fiveDaysData) - 100
-    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, nameAndValue=nameAndValue)
 
 @app.route("/logout")
 def logout():
@@ -117,7 +118,8 @@ def logout():
         fiveDaysData.append(0)
     maxValue = 0
     minValue = 0
-    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+    nameAndValue=[]
+    return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue, nameAndValue=nameAndValue)
 
 
 @app.route("/sign_up", methods=['GET','POST'])
@@ -158,7 +160,7 @@ def sign_up():
             except Exception as e:
                 raise e
             
-            return render_template('index.html',fiveDaysData=[], maxValue=maxValue, minValue=minValue)
+            return render_template('index.html',fiveDaysData=[], maxValue=0, minValue=0,nameAndValue=[])
     return render_template('sign_up.html')
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -178,19 +180,17 @@ def login():
         else:
             session['logged_in'] = True;
             session['username'] = username;
-            xxx = []
+            nameAndValue = []
             cnx = MySQLdb.connect("portfolio-db.cxbh37qczpuy.us-west-1.rds.amazonaws.com","root", "stock_portfolio" , "stock_portfolio")
             cursorone = cnx.cursor()
             query = "SELECT username,password,company_name,quantity FROM USER_PORTFOLIO WHERE username='"+session['username']+"';"
             cursorone.execute(query)
             if cursorone.rowcount is not 0:
                 for username,password,company,quantity in cursorone:
-                    print username
-                    print company
-                    print quantity
-                    stock = Stock('','','',company)
+                    stock = fetchTotalInfo(company)
                     stock.buy_stock(quantity)
-                    xxx.append(stock)
+                    stock.set_value(float(stock.quantity) * float(stock.single_value))
+                    nameAndValue.append(stock)
             fiveDaysData = []
             start = datetime.today() - timedelta(days=7)
             end = datetime.today() - timedelta(days=1)
@@ -198,7 +198,7 @@ def login():
             end = end.strftime('%Y-%m-%d')
             for i in range(5):
                 fiveDaysData.append(0)
-            for val in xxx:
+            for val in nameAndValue:
                 stock = Share(val.symbol)
                 data = stock.get_historical(str(start),str(end))
                 count = 0
@@ -211,7 +211,7 @@ def login():
             fiveDaysData.reverse()
             maxValue = max(fiveDaysData) + 100
             minValue = min(fiveDaysData) - 100
-            return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue)
+            return render_template('index.html',fiveDaysData=fiveDaysData, maxValue=maxValue, minValue=minValue,nameAndValue=nameAndValue)
     return render_template('login.html')
 
 @app.route("/firstPage")
@@ -371,6 +371,21 @@ def fetchPreMarket(symbol):
         return (price, change, perchange)
     except (urllib2.HTTPError, urllib2.URLError), err:
         return (err, "error", "")
+
+def fetchTotalInfo(symbol):
+    price, change, perchange = fetchPreMarket(symbol)
+    if change == "error":
+        return None
+    url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query={}&region=1&lang=en".format(symbol)
+    result = requests.get(url).json()
+    real_name = 'unknown'
+    for x in result['ResultSet']['Result']:
+        if x['symbol'] == symbol:
+            real_name=x['name']
+            break
+    condition = change + ' ' + '(' + str(perchange) + ')'
+    temp = Stock(real_name, condition, float(price), symbol)
+    return temp
 
 def RRgetQuantity(array, amount):
     print "In rrgetquantity"

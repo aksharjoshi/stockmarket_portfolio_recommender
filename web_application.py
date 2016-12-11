@@ -210,8 +210,8 @@ def login():
       #   if test is None:
             # return render_template('noMatch.html')
         query = "SELECT * FROM USER WHERE username='"+username+"' AND password='"+pwd+"';"
+        print query
         cursor.execute(query)
-
         if cursor.fetchone() is None:
             print "inside if"
             return render_template('wrongCred.html', username=username)

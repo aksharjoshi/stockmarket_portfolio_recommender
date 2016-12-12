@@ -122,7 +122,6 @@ span.psw {
 <body>
 
 {% if session['username'] %}
-<!-- <h1><a href="{{ url_for('firstPage') }}"> See History </a></h1> -->
 
 <h2>Investment Detail</h2>
 <div>
@@ -182,14 +181,13 @@ var chart = new CanvasJS.Chart("chartContainer",
 
   chart.render();
 </script>
+<h3><a href="{{ url_for('finance_analysis') }}">Buy more stocks</a></h3>
 
-{%else%}
-<h2> You are not logged in. Kindly sign in or sign up </h2>
+{% else %}
+<h2> You are signed in. Kindly signin or sign up </h2>
 <img src="http://www.usnews.com/cmsmedia/46/19/5c6c54fb4c6f812dc85c20fc656a/141106-portfolio-stock.jpg" align="center" />
-<!-- <h3><a href="{{ url_for('login') }}">Sign In</a></h3>
-<h3><a href="{{ url_for('sign_up') }} "> Sign Up </a></h3>
- -->
-{%endif%}
+{% endif %}
+
 </body>
 </html>
 {% endblock %}
